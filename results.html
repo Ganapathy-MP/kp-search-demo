@@ -711,18 +711,21 @@
     .mypay-response {
       max-width: 640px;
     }
+
     .mypay-loading {
       font-size: 15px;
       color: #555;
       margin-bottom: 20px;
       font-style: italic;
     }
+
     .mypay-section-title {
       font-size: 17px;
       font-weight: 600;
       color: #09326b;
       margin-bottom: 14px;
     }
+
     .payslip-card {
       background: #f8fafc;
       border: 1px solid #e2e8f0;
@@ -730,12 +733,14 @@
       padding: 16px 20px;
       margin-bottom: 12px;
     }
+
     .payslip-date {
       font-size: 15px;
       font-weight: 600;
       color: #09326b;
       margin-bottom: 10px;
     }
+
     .payslip-row {
       display: flex;
       justify-content: space-between;
@@ -744,15 +749,18 @@
       color: #344054;
       gap: 8px;
     }
+
     .payslip-label {
       color: #6b7280;
       font-size: 13px;
     }
+
     .payslip-amount {
       font-weight: 600;
       color: #344054;
       letter-spacing: 1px;
     }
+
     .payslip-toggle {
       font-size: 12px;
       color: #006296;
@@ -760,31 +768,37 @@
       text-decoration: underline;
       white-space: nowrap;
     }
+
     .payslip-net {
       font-size: 13px;
       color: #6b7280;
       margin-top: 6px;
     }
+
     .mypay-see-more {
       margin: 14px 0 22px;
       font-size: 14px;
     }
+
     .mypay-see-more a {
       color: #006296;
       text-decoration: underline;
     }
+
     .mypay-interested {
       background: #f1f6ff;
       border: 1px solid #c4d5e8;
       border-radius: 10px;
       padding: 16px 20px;
     }
+
     .mypay-interested p {
       font-size: 14px;
       font-weight: 600;
       color: #09326b;
       margin: 0 0 10px;
     }
+
     .mypay-interested ul {
       list-style: none;
       margin: 0;
@@ -793,6 +807,7 @@
       flex-wrap: wrap;
       gap: 8px;
     }
+
     .mypay-interested ul li a {
       color: #006296;
       text-decoration: underline;
@@ -2669,43 +2684,42 @@
 
     // W2 Preparation formatted response
     var w2PrepHTML = '<div class="mypay-response">' +
-      '<p class="mypay-loading">Just a moment while I look for an answer.</p>' +
       '<div class="mypay-section-title">Recent Payslips</div>' +
       '<div class="payslip-card">' +
-        '<div class="payslip-date">12-26-2025</div>' +
-        '<div class="payslip-row">' +
-          '<span class="payslip-label">Payment Date</span>' +
-          '<span class="payslip-amount">xxxxxx</span>' +
-          '<span class="payslip-toggle">Toggle Amount View</span>' +
-        '</div>' +
-        '<div class="payslip-net">Net Pay</div>' +
+      '<div class="payslip-date">12-26-2025</div>' +
+      '<div class="payslip-row">' +
+      '<span class="payslip-label">Payment Date</span>' +
+      '<span class="payslip-amount">xxxxxx</span>' +
+      '<span class="payslip-toggle">Toggle Amount View</span>' +
+      '</div>' +
+      '<div class="payslip-net">Net Pay</div>' +
       '</div>' +
       '<div class="payslip-card">' +
-        '<div class="payslip-date">12-12-2025</div>' +
-        '<div class="payslip-row">' +
-          '<span class="payslip-label">Payment Date</span>' +
-          '<span class="payslip-amount">xxxxxx</span>' +
-          '<span class="payslip-toggle">Toggle Amount View</span>' +
-        '</div>' +
-        '<div class="payslip-net">Net Pay</div>' +
+      '<div class="payslip-date">12-12-2025</div>' +
+      '<div class="payslip-row">' +
+      '<span class="payslip-label">Payment Date</span>' +
+      '<span class="payslip-amount">xxxxxx</span>' +
+      '<span class="payslip-toggle">Toggle Amount View</span>' +
+      '</div>' +
+      '<div class="payslip-net">Net Pay</div>' +
       '</div>' +
       '<div class="payslip-card">' +
-        '<div class="payslip-date">11-28-2025</div>' +
-        '<div class="payslip-row">' +
-          '<span class="payslip-label">Payment Date</span>' +
-          '<span class="payslip-amount">xxxxxx</span>' +
-          '<span class="payslip-toggle">Toggle Amount View</span>' +
-        '</div>' +
-        '<div class="payslip-net">Net Pay</div>' +
+      '<div class="payslip-date">11-28-2025</div>' +
+      '<div class="payslip-row">' +
+      '<span class="payslip-label">Payment Date</span>' +
+      '<span class="payslip-amount">xxxxxx</span>' +
+      '<span class="payslip-toggle">Toggle Amount View</span>' +
+      '</div>' +
+      '<div class="payslip-net">Net Pay</div>' +
       '</div>' +
       '<p class="mypay-see-more"><a href="https://mykp.kp.org/en/hr/money/pay/payslips.html" target="_blank" rel="noopener noreferrer">See more details of your payslips.</a></p>' +
       '<div class="mypay-interested">' +
-        '<p>You may also be interested in:</p>' +
-        '<ul>' +
-          '<li><a href="https://mykp.kp.org/en/hr/money/pay/earnings-descriptions.html" target="_blank" rel="noopener noreferrer">Common earnings summary descriptions</a></li>' +
-          '<li><a href="https://mykp.kp.org/en/hr/money/pay/pay-calendar.html" target="_blank" rel="noopener noreferrer">Pay Calendar</a></li>' +
-          '<li><a href="https://mykp.kp.org/en/hr/money/pay.html" target="_blank" rel="noopener noreferrer">My Pay</a></li>' +
-        '</ul>' +
+      '<p>You may also be interested in:</p>' +
+      '<ul>' +
+      '<li><a href="https://mykp.kp.org/en/hr/money/pay/earnings-descriptions.html" target="_blank" rel="noopener noreferrer">Common earnings summary descriptions</a></li>' +
+      '<li><a href="https://mykp.kp.org/en/hr/money/pay/pay-calendar.html" target="_blank" rel="noopener noreferrer">Pay Calendar</a></li>' +
+      '<li><a href="https://mykp.kp.org/en/hr/money/pay.html" target="_blank" rel="noopener noreferrer">My Pay</a></li>' +
+      '</ul>' +
       '</div>' +
       '</div>';
 
