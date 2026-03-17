@@ -1499,7 +1499,7 @@
           <div class="chip-column">
             <button class="chip-outline" data-topic="hr-cases">HR Cases</button>
             <button class="chip-outline" data-topic="it-help">IT Help</button>
-            <button class="chip-outline" data-topic="w2-prep">W2 Preparation</button>
+            <button class="chip-outline" data-topic="w2-prep">My Pay</button>
             <button class="chip-outline" data-topic="holiday-calendar">Holiday calendar</button>
           </div>
         </section>
@@ -1556,9 +1556,9 @@
       },
       {
         topic: 'w2-prep',
-        title: 'W2 Preparation',
+        title: 'My Pay',
         query: 'How do I prepare for my W2',
-        aliases: ['w2 preparation', 'w2 preperation', 'pay and taxes', 'year end checklist'],
+        aliases: ['my pay', 'w2 preparation', 'w2 preperation', 'pay and taxes', 'year end checklist'],
         preview: 'Year-end checklist and tax links',
         expansions: ['w2', 'taxes', 'year end'],
         popular: false
@@ -2268,7 +2268,7 @@
         content = toFullContentForChat(content);
         return '<h2 class="results-title kai-overview-title" style="font-size:18px;margin-bottom:12px;">KAI Overview</h2>' + content;
       }
-      return '<p>I found some general information. For more specific answers, try searching for topics like Health Benefits, HR Cases, Time Off, TORT, W2 Preparation, Holiday Calendar, Retirement, or Medical Leave.</p>';
+      return '<p>I found some general information. For more specific answers, try searching for topics like Health Benefits, HR Cases, Time Off, TORT, My Pay, Holiday Calendar, Retirement, or Medical Leave.</p>';
     }
 
     document.querySelectorAll('.kp-tab').forEach(function (tab) {
