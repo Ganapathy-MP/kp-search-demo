@@ -1,0 +1,2764 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>MyKP – Search Results</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html,
+    body {
+      height: 100%;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+      background: #ffffff;
+      color: #09326b;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Header – match landing screen / Figma */
+    .kp-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 40px 0;
+      border-bottom: 1px solid #b3b6c5;
+      box-shadow: 0 8px 6px -6px #bababa;
+      height: 72px;
+      background: #ffffff;
+    }
+
+    .kp-header-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .kp-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 22px;
+      font-weight: 600;
+      color: #006296;
+      text-decoration: none;
+    }
+
+    .kp-logo span {
+      font-size: 18px;
+      font-weight: 400;
+      color: #4d6a88;
+    }
+
+    .kp-nav {
+      display: flex;
+      align-items: center;
+      height: 56px;
+    }
+
+    .kp-nav a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 30px 14px;
+      font-size: 16px;
+      line-height: 1.15;
+      font-weight: 350;
+      text-decoration: none;
+      color: #0074ad;
+    }
+
+    .kp-header-right {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      font-size: 16px;
+    }
+
+    .icon-btn {
+      border: none;
+      background: none;
+      cursor: pointer;
+      color: #006296;
+      position: relative;
+      padding: 4px;
+    }
+
+    .icon-svg {
+      width: 20px;
+      height: 20px;
+      display: block;
+    }
+
+    .notif-badge {
+      position: absolute;
+      top: -6px;
+      right: -8px;
+      background: #d92d20;
+      color: #fff;
+      border-radius: 999px;
+      font-size: 10px;
+      padding: 1px 5px;
+      font-weight: 600;
+    }
+
+    .kp-profile {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .kp-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      overflow: hidden;
+      background: #c4d5e8;
+    }
+
+    .kp-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .kp-name {
+      font-size: 15px;
+      font-weight: 600;
+      color: #005184;
+    }
+
+    /* Search bar + tabs row */
+    .kp-search-area {
+      padding: 19px 30px 8px;
+      border-bottom: 1px solid #e1e5ec;
+      background: #fbfbfc;
+    }
+
+    .kp-search-inner {
+      max-width: 1300px;
+      margin: 0 auto;
+    }
+
+    .kp-search-bar-wrapper {
+      position: relative;
+      margin-bottom: 16px;
+      width: 980px;
+      max-width: 100%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .kp-search-bar-wrapper .kp-autocomplete {
+      left: 122px;
+      right: 0;
+      top: 50px;
+    }
+
+    .kp-search-bar-wrapper .kp-search-bar {
+      margin-bottom: 0;
+    }
+
+    .kp-search-bar {
+      display: flex;
+      align-items: stretch;
+      border-radius: 54px;
+      overflow: hidden;
+      border: 1px solid #979797;
+      margin: 0 auto;
+      width: 980px;
+      max-width: 100%;
+      height: 50px;
+      background: #ffffff;
+    }
+
+    .kp-search-left {
+      background: #003b71;
+      color: #fff;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 122px;
+      text-align: center;
+      font-weight: 400;
+      font-size: 14px;
+      border-radius: 54px 0 0 54px;
+    }
+
+    .kp-search-left span {
+      line-height: 1.1;
+    }
+
+    .kp-search-input-wrap {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      background: #ffffff;
+      padding: 0 18px;
+      position: relative;
+    }
+
+    .kp-search-input {
+      flex: 1;
+      border: none;
+      outline: none;
+      font-size: 14px;
+      color: #222;
+    }
+
+    .kp-search-clear {
+      flex-shrink: 0;
+      width: 32px;
+      height: 32px;
+      border: none;
+      background: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      color: #344054;
+    }
+
+    .kp-search-clear:hover {
+      background: #f2f4f7;
+    }
+
+    .kp-autocomplete {
+      position: absolute;
+      background: #fff;
+      border: 1px solid #d1d5db;
+      border-top: none;
+      border-radius: 0 0 8px 8px;
+      max-height: 280px;
+      overflow-y: auto;
+      z-index: 100;
+      display: none;
+      box-sizing: border-box;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+
+    .kp-autocomplete.is-visible {
+      display: block;
+    }
+
+    .kp-autocomplete-item {
+      display: flex;
+      align-items: center;
+      padding: 12px 18px;
+      font-size: 14px;
+      line-height: 1.4;
+      color: #1f2937;
+      cursor: pointer;
+      transition: background 0.1s ease;
+    }
+
+    .kp-autocomplete-item:hover,
+    .kp-autocomplete-item.is-active {
+      background: #f3f4f6;
+    }
+
+    .kp-autocomplete-item-icon {
+      flex-shrink: 0;
+      width: 18px;
+      height: 18px;
+      margin-right: 12px;
+      color: #9ca3af;
+    }
+
+    .kp-autocomplete-item:hover .kp-autocomplete-item-icon,
+    .kp-autocomplete-item.is-active .kp-autocomplete-item-icon {
+      color: #006296;
+    }
+
+    .kp-autocomplete-item-main {
+      min-width: 0;
+      flex: 1;
+    }
+
+    .kp-autocomplete-item-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: #09326b;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .kp-autocomplete-item-title mark {
+      background: #e0f2ff;
+      color: #0b4f7a;
+      border-radius: 2px;
+      padding: 0 2px;
+    }
+
+    .kp-autocomplete-item-meta {
+      margin-top: 2px;
+      font-size: 12px;
+      color: #667085;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .kp-autocomplete-badge {
+      flex-shrink: 0;
+      margin-left: 10px;
+      font-size: 11px;
+      color: #005184;
+      background: #e0f2ff;
+      border-radius: 999px;
+      padding: 5px 8px;
+      font-weight: 600;
+    }
+
+    .kp-predict-hint {
+      min-height: 18px;
+      margin-top: 8px;
+      margin-left: 124px;
+      font-size: 12px;
+      color: #52617a;
+    }
+
+    .kp-tabs-row {
+      display: flex;
+      gap: 24px;
+      font-size: 16px;
+      color: #4d6a88;
+    }
+
+    .kp-tab {
+      border: none;
+      background: none;
+      cursor: pointer;
+      padding: 6px 0;
+      position: relative;
+      font-size: 16px;
+      color: #4d6a88;
+    }
+
+    .kp-tab-active {
+      color: #006296;
+      font-weight: 600;
+    }
+
+    .kp-tab-active::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -4px;
+      height: 3px;
+      background: #006296;
+      border-radius: 999px;
+    }
+
+    /* Results layout */
+    .results-shell {
+      padding: 24px 32px 40px;
+      flex: 1;
+    }
+
+    .results-inner {
+      max-width: 1300px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: minmax(0, 3fr) minmax(260px, 1.2fr);
+      gap: 32px;
+    }
+
+    .results-title {
+      font-size: 22px;
+      margin-bottom: 12px;
+      color: #09326b;
+    }
+
+    .kai-overview-title {
+      font-family: "Avenir Next", "Segoe UI Variable", "Segoe UI", "Helvetica Neue", sans-serif;
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: 0.2px;
+      color: #0a3e78;
+    }
+
+    .results-body p {
+      font-size: 15px;
+      line-height: 1.6;
+      color: #344054;
+      margin-bottom: 12px;
+    }
+
+    .results-list {
+      padding-left: 20px;
+      margin-bottom: 16px;
+      color: #344054;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    .results-list li {
+      margin-bottom: 8px;
+    }
+
+    .results-body a {
+      color: #006296;
+      text-decoration: underline;
+    }
+
+    /* Right column cards */
+    .side-card {
+      background: #f1f6ff;
+      border-radius: 10px;
+      padding: 16px 18px;
+      margin-bottom: 16px;
+    }
+
+    .side-card h2 {
+      font-size: 16px;
+      margin-bottom: 10px;
+      color: #09326b;
+    }
+
+    .side-links {
+      list-style: none;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .side-links a {
+      color: #006296;
+      text-decoration: underline;
+    }
+
+    .side-links li {
+      margin-bottom: 16px;
+    }
+
+    .side-links li:last-child {
+      margin-bottom: 0;
+    }
+
+    .source-list {
+      list-style: none;
+    }
+
+    .source-item {
+      margin-bottom: 20px;
+    }
+
+    .source-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .source-title {
+      color: #0066cc;
+      text-decoration: underline;
+      font-size: 14px;
+      line-height: 1.5;
+      display: block;
+    }
+
+    .source-title:hover {
+      color: #004a99;
+    }
+
+    .response-with-sources .response-sources-below {
+      margin-top: 24px;
+      padding: 0;
+    }
+
+    .response-with-sources .response-sources-below .source-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .response-with-sources .response-sources-below .source-item {
+      margin-bottom: 20px;
+    }
+
+    .response-with-sources .response-sources-below .source-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .response-with-sources .response-sources-below .source-desc {
+      color: #344054;
+      font-size: 14px;
+      line-height: 1.5;
+      margin: 4px 0 0 0;
+    }
+
+    .chip-column {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 6px;
+    }
+
+    .chip-outline {
+      border-radius: 999px;
+      border: 2px solid #006296;
+      padding: 6px 16px;
+      font-size: 14px;
+      color: #006296;
+      background: #ffffff;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    /* Health Benefits formatted response */
+    .health-benefits-response {
+      max-width: 640px;
+    }
+
+    .health-benefits-response .intro {
+      font-size: 15px;
+      line-height: 1.6;
+      color: #344054;
+      margin-bottom: 20px;
+    }
+
+    .health-benefits-response .intro a {
+      color: #006296;
+      text-decoration: underline;
+    }
+
+    .health-benefits-response .coverage-card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 18px 20px;
+      margin-bottom: 16px;
+    }
+
+    .health-benefits-response .coverage-card h3 {
+      font-size: 16px;
+      font-weight: 600;
+      color: #09326b;
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .health-benefits-response .coverage-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 24px;
+      font-size: 14px;
+      line-height: 1.5;
+      color: #344054;
+      margin-bottom: 6px;
+    }
+
+    .health-benefits-response .coverage-row:last-child {
+      margin-bottom: 0;
+    }
+
+    .health-benefits-response .coverage-label {
+      font-weight: 600;
+      color: #09326b;
+      min-width: 140px;
+    }
+
+    /* HR Cases formatted response */
+    .hr-cases-response {
+      max-width: 720px;
+    }
+
+    .hr-cases-response .intro {
+      font-size: 15px;
+      line-height: 1.6;
+      color: #344054;
+      margin-bottom: 20px;
+    }
+
+    .hr-cases-response .case-card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 18px 20px;
+      margin-bottom: 16px;
+    }
+
+    .hr-cases-response .case-card h3 {
+      font-size: 15px;
+      font-weight: 600;
+      color: #09326b;
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .hr-cases-response .case-row {
+      font-size: 14px;
+      line-height: 1.6;
+      color: #344054;
+      margin-bottom: 6px;
+    }
+
+    .hr-cases-response .case-row:last-of-type {
+      margin-bottom: 12px;
+    }
+
+    .hr-cases-response .case-label {
+      font-weight: 600;
+      color: #09326b;
+      margin-right: 6px;
+    }
+
+    .hr-cases-response .case-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid #e2e8f0;
+    }
+
+    .hr-cases-response .case-btn {
+      font-size: 13px;
+      font-weight: 600;
+      color: #006296;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px 0;
+      text-decoration: underline;
+    }
+
+    .hr-cases-response .case-btn:hover {
+      color: #004a7c;
+    }
+
+    /* W2 Preparation formatted response */
+    .w2-prep-response {
+      max-width: 640px;
+    }
+
+    .w2-prep-response .title {
+      font-size: 22px;
+      font-weight: 600;
+      color: #09326b;
+      margin-bottom: 20px;
+    }
+
+    .w2-prep-response .checklist-card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 20px 24px;
+      margin-bottom: 20px;
+    }
+
+    .w2-prep-response .checklist-card h3 {
+      font-size: 15px;
+      font-weight: 600;
+      color: #09326b;
+      margin-bottom: 14px;
+    }
+
+    .w2-prep-response .checklist-list {
+      list-style: none;
+      font-size: 15px;
+      line-height: 1.7;
+      color: #344054;
+    }
+
+    .w2-prep-response .checklist-list li {
+      position: relative;
+      padding-left: 24px;
+      margin-bottom: 10px;
+    }
+
+    .w2-prep-response .checklist-list li::before {
+      content: "✓";
+      position: absolute;
+      left: 0;
+      color: #006296;
+      font-weight: 600;
+    }
+
+    .w2-prep-response .outro-card {
+      background: #f1f6ff;
+      border: 1px solid #c4d5e8;
+      border-radius: 10px;
+      padding: 18px 20px;
+    }
+
+    .w2-prep-response .outro-card p {
+      font-size: 15px;
+      line-height: 1.6;
+      color: #344054;
+      margin: 0;
+    }
+
+    .w2-prep-response a {
+      color: #006296;
+      text-decoration: underline;
+    }
+
+    /* Holiday Calendar formatted response */
+    .holiday-calendar-response {
+      max-width: 640px;
+    }
+
+    .holiday-calendar-response .title {
+      font-size: 22px;
+      font-weight: 600;
+      color: #09326b;
+      margin-bottom: 20px;
+    }
+
+    .holiday-calendar-response .intro-card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 20px 24px;
+      margin-bottom: 20px;
+    }
+
+    .holiday-calendar-response .intro-card p {
+      font-size: 15px;
+      line-height: 1.6;
+      color: #344054;
+      margin: 0;
+    }
+
+    .holiday-calendar-response .related-card {
+      background: #f1f6ff;
+      border: 1px solid #c4d5e8;
+      border-radius: 10px;
+      padding: 20px 24px;
+    }
+
+    .holiday-calendar-response .related-card h3 {
+      font-size: 15px;
+      font-weight: 600;
+      color: #09326b;
+      margin-bottom: 14px;
+    }
+
+    .holiday-calendar-response .related-links {
+      list-style: none;
+      font-size: 15px;
+      line-height: 1.8;
+    }
+
+    .holiday-calendar-response .related-links li {
+      margin-bottom: 10px;
+    }
+
+    .holiday-calendar-response .related-links li:last-child {
+      margin-bottom: 0;
+    }
+
+    .holiday-calendar-response .related-links a {
+      color: #006296;
+      text-decoration: underline;
+    }
+
+    /* Retirement formatted response */
+    .retirement-response {
+      max-width: 640px;
+    }
+
+    .retirement-response .title {
+      font-size: 22px;
+      font-weight: 600;
+      color: #09326b;
+      margin-bottom: 20px;
+    }
+
+    .retirement-response .intro-card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 20px 24px;
+    }
+
+    .retirement-response .intro-card p {
+      font-size: 15px;
+      line-height: 1.6;
+      color: #344054;
+      margin: 0;
+    }
+
+    .retirement-response a {
+      color: #006296;
+      text-decoration: underline;
+    }
+
+    /* Time Off formatted response */
+    .time-off-response {
+      max-width: 640px;
+    }
+
+    .time-off-response .intro {
+      font-size: 15px;
+      line-height: 1.6;
+      color: #344054;
+      margin-bottom: 20px;
+    }
+
+    .time-off-response .time-off-card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 18px 20px;
+      margin-bottom: 16px;
+    }
+
+    .time-off-response .time-off-card h3 {
+      font-size: 14px;
+      font-weight: 600;
+      color: #09326b;
+      margin-bottom: 4px;
+    }
+
+    .time-off-response .time-off-card .plan-name {
+      font-size: 13px;
+      color: #6b7280;
+      margin-bottom: 12px;
+    }
+
+    .time-off-response .time-off-card .balance {
+      font-size: 18px;
+      font-weight: 600;
+      color: #09326b;
+      margin-bottom: 12px;
+    }
+
+    .time-off-response .time-off-row {
+      font-size: 14px;
+      line-height: 1.6;
+      color: #344054;
+      margin-bottom: 4px;
+    }
+
+    .time-off-response .time-off-row .label {
+      font-weight: 600;
+      color: #09326b;
+      margin-right: 6px;
+    }
+
+    .time-off-response .outro {
+      font-size: 15px;
+      line-height: 1.6;
+      color: #344054;
+      margin-top: 20px;
+    }
+
+    .time-off-response .outro a {
+      color: #006296;
+      text-decoration: underline;
+    }
+
+    /* TORT formatted response */
+    .tort-response {
+      max-width: 720px;
+    }
+
+    .tort-response .title {
+      font-size: 22px;
+      font-weight: 600;
+      color: #09326b;
+      margin-bottom: 20px;
+    }
+
+    .tort-response .tort-content {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 24px 28px;
+    }
+
+    .tort-response .tort-content h3 {
+      font-size: 16px;
+      font-weight: 600;
+      color: #09326b;
+      margin: 20px 0 10px;
+    }
+
+    .tort-response .tort-content h3:first-of-type {
+      margin-top: 0;
+    }
+
+    .tort-response .tort-content h4 {
+      font-size: 14px;
+      font-weight: 600;
+      color: #344054;
+      margin: 14px 0 6px;
+    }
+
+    .tort-response .tort-content p,
+    .tort-response .tort-content li {
+      font-size: 15px;
+      line-height: 1.6;
+      color: #344054;
+      margin-bottom: 8px;
+    }
+
+    .tort-response .tort-content ul {
+      margin: 8px 0 0 20px;
+      padding: 0;
+    }
+
+    .tort-response .tort-content .note {
+      font-style: italic;
+      color: #6b7280;
+      margin-top: 6px;
+    }
+
+    .tort-response .tort-content a {
+      color: #006296;
+      text-decoration: underline;
+    }
+
+    /* Response with Show more + sources below */
+    .response-with-sources {
+      max-width: 720px;
+    }
+
+    .response-with-sources .response-preview {
+      max-height: 220px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .response-with-sources .response-preview.is-expanded {
+      max-height: none;
+      overflow: visible;
+    }
+
+    .response-with-sources .response-preview .fade-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 56px;
+      background: linear-gradient(transparent, #f8fafc);
+      pointer-events: none;
+    }
+
+    .response-with-sources .response-preview.is-expanded .fade-overlay {
+      display: none;
+    }
+
+    .response-with-sources .show-more-wrap {
+      margin-top: 12px;
+      margin-bottom: 24px;
+      width: 100%;
+    }
+
+    .response-with-sources .show-more-btn {
+      display: flex;
+      width: 100%;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      font-size: 14px;
+      font-weight: 500;
+      color: #344054;
+      background: #ffffff;
+      border: 1px solid #b3b6c5;
+      border-radius: 999px;
+      cursor: pointer;
+      padding: 10px 20px;
+      font-family: inherit;
+    }
+
+    .response-with-sources .show-more-btn:hover {
+      background: #f8fafc;
+    }
+
+    .response-with-sources .show-more-btn .chevron {
+      display: inline-flex;
+      transition: transform 0.2s ease;
+    }
+
+    .response-with-sources .show-more-btn[data-expanded="true"] .chevron {
+      transform: rotate(180deg);
+    }
+
+    /* KAI Chat mode */
+    .results-main-col {
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .kai-chat-view {
+      display: none;
+      flex-direction: column;
+      height: calc(100vh - 280px);
+      min-height: 400px;
+      overflow: hidden;
+    }
+
+    .kai-chat-view.is-visible {
+      display: flex;
+    }
+
+    .kai-chat-messages {
+      flex: 1;
+      min-height: 0;
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding: 0 8px 16px 0;
+      scrollbar-width: thin;
+      scrollbar-color: #b3b6c5 #f1f6ff;
+    }
+
+    .kai-chat-messages::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .kai-chat-messages::-webkit-scrollbar-track {
+      background: #f1f6ff;
+      border-radius: 4px;
+    }
+
+    .kai-chat-messages::-webkit-scrollbar-thumb {
+      background: #b3b6c5;
+      border-radius: 4px;
+    }
+
+    .kai-chat-messages::-webkit-scrollbar-thumb:hover {
+      background: #979797;
+    }
+
+    .kai-chat-msg {
+      margin-bottom: 20px;
+      max-width: 85%;
+    }
+
+    .kai-chat-msg.user {
+      margin-left: auto;
+    }
+
+    .kai-chat-msg.user .kai-chat-msg-bubble {
+      background: #e0f2ff;
+      color: #09326b;
+      margin-left: auto;
+    }
+
+    .kai-chat-msg.assistant {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      max-width: 100%;
+    }
+
+    .kai-chat-avatar {
+      flex-shrink: 0;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      overflow: hidden;
+      margin-top: 2px;
+    }
+
+    .kai-chat-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .kai-chat-msg-body {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .kai-chat-msg.assistant .kai-chat-msg-bubble {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      color: #344054;
+    }
+
+    .kai-chat-msg-bubble {
+      padding: 14px 18px;
+      border-radius: 12px;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    .kai-chat-msg-bubble p {
+      margin: 0 0 8px 0;
+    }
+
+    .kai-chat-msg-bubble p:last-child {
+      margin-bottom: 0;
+    }
+
+    .kai-chat-msg-bubble a {
+      color: #006296;
+      text-decoration: underline;
+    }
+
+
+    .kai-chat-msg-label {
+      font-size: 12px;
+      color: #6b7280;
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+
+    .kai-chat-input-wrap {
+      display: flex;
+      flex-shrink: 0;
+      gap: 10px;
+      padding: 16px 0 0;
+      border-top: 1px solid #e2e8f0;
+      margin-top: 0;
+      background: #ffffff;
+    }
+
+    .kai-chat-input {
+      flex: 1;
+      padding: 12px 18px;
+      border: 1px solid #d1d5db;
+      border-radius: 24px;
+      font-size: 15px;
+      font-family: inherit;
+      outline: none;
+    }
+
+    .kai-chat-input:focus {
+      border-color: #006296;
+      box-shadow: 0 0 0 2px rgba(0, 98, 150, 0.15);
+    }
+
+    .kai-chat-send {
+      padding: 12px 24px;
+      background: #006296;
+      color: #fff;
+      border: none;
+      border-radius: 24px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .kai-chat-send:hover {
+      background: #005184;
+    }
+
+    .kai-chat-send:disabled {
+      background: #9ca3af;
+      cursor: not-allowed;
+    }
+
+    .kai-chat-loading {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 18px;
+      color: #6b7280;
+      font-size: 14px;
+    }
+
+    .kai-chat-loading-dot {
+      width: 6px;
+      height: 6px;
+      background: #006296;
+      border-radius: 50%;
+      animation: kai-chat-bounce 1.4s ease-in-out infinite both;
+    }
+
+    .kai-chat-loading-dot:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    .kai-chat-loading-dot:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+
+    @keyframes kai-chat-bounce {
+
+      0%,
+      80%,
+      100% {
+        transform: scale(0);
+      }
+
+      40% {
+        transform: scale(1);
+      }
+    }
+
+    .results-view-hidden {
+      display: none !important;
+    }
+
+    /* Footer */
+    .kp-footer {
+      margin-top: 32px;
+      background: #004a7c;
+      color: #ffffff;
+      padding: 10px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 13px;
+    }
+
+    .kp-footer-left {
+      font-weight: 500;
+    }
+
+    .kp-footer-links {
+      display: flex;
+      gap: 24px;
+    }
+
+    .kp-footer a {
+      color: #ffffff;
+      text-decoration: none;
+    }
+
+    .kp-footer a:hover {
+      text-decoration: underline;
+    }
+
+    /* Focus styles – keep outlines except search input */
+    .kp-tab:focus-visible,
+    .chip-outline:focus-visible,
+    .kp-search-clear:focus-visible,
+    .case-btn:focus-visible,
+    a:focus-visible {
+      outline: 2px solid #005bb5;
+      outline-offset: 2px;
+    }
+
+    .kp-search-input:focus,
+    .kp-search-input:focus-visible {
+      outline: none;
+    }
+
+    @media (max-width: 900px) {
+      .results-inner {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .kp-predict-hint {
+        margin-left: 0;
+      }
+    }
+
+    .results-loading {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 200px;
+      padding: 40px;
+    }
+
+    .results-loading-spinner {
+      width: 48px;
+      height: 48px;
+      border: 4px solid #e2e8f0;
+      border-top-color: #006296;
+      border-radius: 50%;
+      animation: results-spin 0.8s linear infinite;
+    }
+
+    .results-loading-text {
+      margin-top: 16px;
+      font-size: 16px;
+      color: #344054;
+    }
+
+    @keyframes results-spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* More search results */
+    .more-results {
+      margin-top: 32px;
+      padding-top: 24px;
+      border-top: 1px solid #e2e8f0;
+    }
+
+    .more-results-heading {
+      font-size: 16px;
+      font-weight: 600;
+      color: #09326b;
+      margin-bottom: 20px;
+    }
+
+    .more-results-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+
+    .more-result-item {
+      max-width: 680px;
+    }
+
+    .more-result-source {
+      font-size: 12px;
+      color: #3c6a3f;
+      margin-bottom: 3px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .more-result-source::before {
+      content: "";
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      background: #e2e8f0;
+      border-radius: 3px;
+      flex-shrink: 0;
+    }
+
+    .more-result-title {
+      font-size: 18px;
+      font-weight: 400;
+      color: #1a0dab;
+      text-decoration: none;
+      line-height: 1.3;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .more-result-title:hover {
+      text-decoration: underline;
+    }
+
+    .more-result-snippet {
+      font-size: 14px;
+      color: #344054;
+      line-height: 1.58;
+      margin: 0;
+    }
+
+    .more-result-snippet mark {
+      background: none;
+      font-weight: 600;
+      color: #344054;
+    }
+  </style>
+</head>
+
+<body>
+  <header class="kp-header">
+    <div class="kp-header-left">
+      <a href="index.html" class="kp-logo" aria-label="Go to home">
+        <span>KAISER PERMANENTE</span>
+        <span>| MyKP</span>
+      </a>
+      <nav class="kp-nav">
+        <a href="#">For Me</a>
+        <a href="#">For My Job</a>
+        <a href="#">For Managers</a>
+        <a href="#">About KP</a>
+      </nav>
+    </div>
+
+    <div class="kp-header-right">
+      <button class="icon-btn" aria-label="Search">
+        <svg class="icon-svg" viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="11" cy="11" r="5.5" fill="none" stroke="#006296" stroke-width="1.8" />
+          <line x1="14.5" y1="14.5" x2="19" y2="19" stroke="#006296" stroke-width="1.8" stroke-linecap="round" />
+        </svg>
+      </button>
+      <button class="icon-btn" aria-label="Favorites">
+        <svg class="icon-svg" viewBox="0 0 24 24" aria-hidden="true">
+          <rect x="4" y="5" width="16" height="14" rx="2" ry="2" fill="none" stroke="#006296" stroke-width="1.8" />
+          <polyline points="4,9 12,9 20,9" fill="none" stroke="#006296" stroke-width="1.8" />
+        </svg>
+      </button>
+      <button class="icon-btn" aria-label="Notifications">
+        <svg class="icon-svg" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 4c-2.2 0-4 1.8-4 4v3.5L7 14v1h10v-1l-1-2.5V8c0-2.2-1.8-4-4-4z" fill="none" stroke="#006296"
+            stroke-width="1.8" stroke-linejoin="round" />
+          <path d="M10 17c.3.9 1 1.5 2 1.5s1.7-.6 2-1.5" fill="none" stroke="#006296" stroke-width="1.8"
+            stroke-linecap="round" />
+        </svg>
+        <span class="notif-badge">4</span>
+      </button>
+      <div class="kp-profile">
+        <div class="kp-avatar">
+          <!-- Optional: replace with real photo -->
+        </div>
+        <span class="kp-name">KimberlynnAnne</span>
+      </div>
+    </div>
+  </header>
+
+  <section class="kp-search-area">
+    <div class="kp-search-inner">
+      <div class="kp-search-bar-wrapper">
+        <form id="searchForm2" class="kp-search-bar">
+          <div class="kp-search-left">
+            <span>How can<br />I help you?</span>
+          </div>
+          <div class="kp-search-input-wrap">
+            <input id="searchInput2" class="kp-search-input" type="text" aria-label="Search" autocomplete="off"
+              spellcheck="true" autocorrect="on" autocapitalize="off" inputmode="search" />
+            <button type="button" class="kp-search-clear" aria-label="Clear search" title="Clear">
+              <svg class="icon-svg" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M18 6L6 18M6 6l12 12" stroke="#344054" stroke-width="2" stroke-linecap="round" />
+              </svg>
+            </button>
+          </div>
+        </form>
+        <div id="autocomplete2" class="kp-autocomplete" role="listbox" aria-label="Search suggestions"></div>
+        <div id="predictHint2" class="kp-predict-hint" aria-live="polite"></div>
+      </div>
+
+      <div class="kp-tabs-row">
+        <button class="kp-tab kp-tab-active" data-tab="all">All</button>
+        <button class="kp-tab" data-tab="kai">KAI chat mode</button>
+        <button class="kp-tab" data-tab="search">Search</button>
+        <button class="kp-tab" data-tab="people">People</button>
+        <button class="kp-tab" data-tab="tools">Tools</button>
+      </div>
+    </div>
+  </section>
+
+  <main class="results-shell">
+    <div id="resultsContent" class="results-inner">
+      <div class="results-main-col">
+        <section id="resultsBody" class="results-body">
+          <h1 class="results-title kai-overview-title">KAI Overview</h1>
+          <p>
+            Kaiser Permanente offers a wide range of benefits to support your health, financial well‑being,
+            and work‑life balance. Here are some key benefits available:
+          </p>
+          <ul class="results-list">
+            <li>
+              <strong>Health Benefits:</strong> Includes medical, dental, and mental health coverage. You can make
+              changes to your benefits and explore options like flexible spending accounts to reduce taxable
+              income. More details can be found in your <a href="#">benefit documents</a>.
+            </li>
+            <li>
+              <strong>Life Insurance and Disability:</strong> Provides financial assistance in the event of a serious
+              injury or death. <a href="#">View your coverage</a>.
+            </li>
+            <li>
+              <strong>Retirement:</strong> Offers a range of retirement NPA‑Benefits to ensure you are prepared for
+              the future. <a href="#">View your retirement benefits</a>.
+            </li>
+            <li>
+              <strong>Employee Assistance Program:</strong> Offers free and confidential services for work or
+              personal stress, financial and legal matters, and more.
+              <a href="#">Learn more about Employee Assistance Program</a>.
+            </li>
+            <li>
+              <strong>Voluntary Benefits:</strong> Includes options like identity protection, auto and home insurance,
+              and more. <a href="#">Learn more</a>.
+            </li>
+          </ul>
+          <p>
+            For more detailed information, you can explore the various links provided for each benefit category.
+          </p>
+        </section>
+
+        <div id="kaiChatView" class="kai-chat-view">
+          <div id="kaiChatMessages" class="kai-chat-messages"></div>
+          <form id="kaiChatForm" class="kai-chat-input-wrap">
+            <input id="kaiChatInput" class="kai-chat-input" type="text" placeholder="Type a follow-up question..."
+              autocomplete="off" aria-label="Follow-up question" />
+            <button type="submit" class="kai-chat-send" id="kaiChatSend">Send</button>
+          </form>
+        </div>
+      </div>
+
+      <aside>
+        <section id="sourcesCard" class="side-card">
+          <h2>Sources</h2>
+          <ul class="side-links">
+            <li><a href="#" class="js-health-benefits-link">Health Benefits</a></li>
+            <li><a href="#">Life insurance and disability</a></li>
+            <li><a href="#" class="js-retirement-link">Retirement</a></li>
+          </ul>
+        </section>
+
+        <section class="side-card">
+          <h2>Common Questions</h2>
+          <div class="chip-column">
+            <button class="chip-outline" data-topic="hr-cases">HR Cases</button>
+            <button class="chip-outline" data-topic="it-help">IT Help</button>
+            <button class="chip-outline" data-topic="w2-prep">W2 Preparation</button>
+            <button class="chip-outline" data-topic="holiday-calendar">Holiday calendar</button>
+          </div>
+        </section>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="kp-footer">
+    <div class="kp-footer-left">MyKP Feedback</div>
+    <div class="kp-footer-links">
+      <a href="#">Privacy Statement</a>
+      <a href="#">Terms and Conditions</a>
+    </div>
+  </footer>
+
+  <script>
+    var RECENT_SEARCH_KEY = 'kp-demo-recent-searches';
+    var SEARCH_INTENTS = [
+      {
+        topic: 'health-benefits',
+        title: 'Health Benefits',
+        query: 'What are my health benefits',
+        aliases: ['what is my benefits', 'health benifits', 'medical benefits', 'dental coverage'],
+        preview: 'Medical, dental, and plan cost details',
+        expansions: ['benefits', 'medical', 'dental'],
+        popular: true
+      },
+      {
+        topic: 'hr-cases',
+        title: 'HR Cases',
+        query: 'What are my HR cases',
+        aliases: ['what are my hr case', 'hr casses', 'my open hr cases', 'employee dashboard case'],
+        preview: 'Open cases, status, and latest comments',
+        expansions: ['hr case', 'employee case status', 'dashboard'],
+        popular: true
+      },
+      {
+        topic: 'time-off',
+        title: 'Time Off',
+        query: 'What are my time off balances',
+        aliases: ['what are my time off', 'pto balance', 'vacation hours', 'sick leave balance', 'time of'],
+        preview: 'PTO, holiday, and sick balance at a glance',
+        expansions: ['pto', 'vacation', 'absence balance'],
+        popular: true
+      },
+      {
+        topic: 'tort',
+        title: 'Time Off Request Tracking (TORT)',
+        query: 'How do I use TORT',
+        aliases: ['tort', 'time off request tracking', 'no approver on record', 'approve time off request'],
+        preview: 'Request and approver help for TORT',
+        expansions: ['tort', 'time request tracking', 'approver'],
+        popular: false
+      },
+      {
+        topic: 'w2-prep',
+        title: 'W2 Preparation',
+        query: 'How do I prepare for my W2',
+        aliases: ['w2 preparation', 'w2 preperation', 'pay and taxes', 'year end checklist'],
+        preview: 'Year-end checklist and tax links',
+        expansions: ['w2', 'taxes', 'year end'],
+        popular: false
+      },
+      {
+        topic: 'holiday-calendar',
+        title: 'Holiday Calendar',
+        query: 'What is the holiday calendar',
+        aliases: ['holiday calender', 'holiday schedule', 'company holidays', 'floating holiday'],
+        preview: 'Current year holidays and related links',
+        expansions: ['holiday', 'calendar', 'time off'],
+        popular: false
+      },
+      {
+        topic: 'retirement',
+        title: 'Retirement',
+        query: 'Show my retirement benefits',
+        aliases: ['retirment', 'retirement plan', '401k', 'pension'],
+        preview: 'Retirement plan details and resources',
+        expansions: ['retirement', '401k', 'pension'],
+        popular: false
+      },
+      {
+        topic: 'it-help',
+        title: 'IT Help',
+        query: 'I need IT help',
+        aliases: ['password reset', 'it support', 'vpn issue', 'access request'],
+        preview: 'Service desk and support options',
+        expansions: ['it help', 'service desk', 'support'],
+        popular: false
+      },
+      {
+        topic: 'medical-leave-extend',
+        title: 'Extend Medical Leave',
+        query: 'I\'m currently on medical leave and might need more time. What do I need to do to extend it?',
+        aliases: ['extend medical leave', 'medical leave extension', 'more time on leave', 'extend my leave'],
+        preview: 'Steps to extend a medical leave of absence',
+        expansions: ['medical leave', 'extend leave', 'leave of absence'],
+        popular: false
+      },
+      {
+        topic: 'compensation-philosophy',
+        title: 'Compensation Philosophy',
+        query: 'How does the compensation philosophy affect how I\'m paid?',
+        aliases: ['compensation philosophy', 'how am I paid', 'pay philosophy', 'salary philosophy', 'merit pay', 'total compensation'],
+        preview: 'Fair pay, merit, transparency, and total rewards',
+        expansions: ['compensation', 'pay', 'salary', 'merit'],
+        popular: false
+      },
+      {
+        topic: 'laptop-sick-leave',
+        title: 'Laptop Issue and Sick Leave',
+        query: 'My laptop isn\'t working and I also want to submit a sick leave request. What should I do?',
+        aliases: ['laptop not working', 'computer hardware issue', 'sick leave request', 'submit time off', 'laptop broken', 'sick day request'],
+        preview: 'Report laptop issues and submit sick leave',
+        expansions: ['laptop', 'sick leave', 'time off', 'computer issue'],
+        popular: false
+      },
+      {
+        topic: 'robert-hitomi',
+        title: 'Robert K Hitomi',
+        query: 'Robert K Hitomi',
+        aliases: ['Robert Hitomi', 'Hitomi', 'R Hitomi', 'Rob Hitomi', 'Rob hitomi', 'rob hitomi', 'robert hitomi', 'robert k hitomi'],
+        preview: 'Director of Product Management, EmSvc HRIS Digital Systems',
+        expansions: ['hitomi', 'robert hitomi', 'robert k hitomi'],
+        popular: false
+      }
+    ];
+
+    var resultsEl = document.getElementById('resultsContent');
+    var sourcesCardEl = document.getElementById('sourcesCard');
+    var defaultSourcesHTML = sourcesCardEl ? sourcesCardEl.innerHTML : '';
+    var resultsOriginalHTML = resultsEl ? resultsEl.innerHTML : '';
+    var RESPONSE_DELAY_MS = 1000;
+
+    var chatMessages = [];
+    var currentChatInitialQuery = '';
+    var currentChatTopic = '';
+
+    var loadingHTML = '<div class="results-loading">' +
+      '<div class="results-loading-spinner"></div>' +
+      '<div class="results-loading-text">Just a moment while I look for an answer.</div>' +
+      '</div>';
+
+    var TYPO_NORMALIZATION_MAP = {
+      benifits: 'benefits',
+      benfits: 'benefits',
+      benefiits: 'benefits',
+      casses: 'cases',
+      retirment: 'retirement',
+      preperation: 'preparation',
+      calender: 'calendar'
+    };
+    var kaiOverviewHeader = '<h1 class="results-title kai-overview-title">KAI Overview</h1>';
+
+    function normalizeText(value) {
+      var normalized = (value || '')
+        .toLowerCase()
+        .replace(/[^a-z0-9\s]/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+      if (!normalized) return '';
+      normalized = normalized.replace(/\btime of\b/g, 'time off');
+      return normalized.split(' ').map(function (token) {
+        return TYPO_NORMALIZATION_MAP[token] || token;
+      }).join(' ').trim();
+    }
+
+    function escapeHtml(value) {
+      return (value || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function levenshteinDistance(a, b) {
+      var source = a || '';
+      var target = b || '';
+      var matrix = [];
+      var i;
+      var j;
+
+      if (!source.length) return target.length;
+      if (!target.length) return source.length;
+
+      for (i = 0; i <= target.length; i += 1) {
+        matrix[i] = [i];
+      }
+      for (j = 0; j <= source.length; j += 1) {
+        matrix[0][j] = j;
+      }
+
+      for (i = 1; i <= target.length; i += 1) {
+        for (j = 1; j <= source.length; j += 1) {
+          if (target.charAt(i - 1) === source.charAt(j - 1)) {
+            matrix[i][j] = matrix[i - 1][j - 1];
+          } else {
+            matrix[i][j] = Math.min(
+              matrix[i - 1][j - 1] + 1,
+              matrix[i][j - 1] + 1,
+              matrix[i - 1][j] + 1
+            );
+          }
+        }
+      }
+
+      return matrix[target.length][source.length];
+    }
+
+    function scoreCandidate(query, candidate) {
+      if (!query || !candidate) return 0;
+      if (query === candidate) return 1;
+      if (candidate.indexOf(query) !== -1) return 0.93;
+      if (query.indexOf(candidate) !== -1) return 0.87;
+
+      var queryTokens = query.split(' ');
+      var candidateTokens = candidate.split(' ');
+      var overlapCount = 0;
+      queryTokens.forEach(function (token) {
+        if (candidateTokens.indexOf(token) !== -1) overlapCount += 1;
+      });
+
+      var overlapScore = overlapCount / Math.max(queryTokens.length, candidateTokens.length);
+      var editDistance = levenshteinDistance(query, candidate);
+      var editScore = 1 - (editDistance / Math.max(query.length, candidate.length));
+      var blended = (overlapScore * 0.78) + (editScore * 0.42);
+      return Math.max(0, Math.min(1, Math.max(blended, editScore * 0.65)));
+    }
+
+    function getIntentByTopic(topic) {
+      var match = null;
+      SEARCH_INTENTS.forEach(function (intent) {
+        if (intent.topic === topic) match = intent;
+      });
+      return match;
+    }
+
+    function rankIntents(rawQuery) {
+      var query = normalizeText(rawQuery);
+      if (!query) return [];
+
+      var ranked = SEARCH_INTENTS.map(function (intent) {
+        var candidates = [intent.query].concat(intent.aliases || []);
+        var bestScore = 0;
+
+        candidates.forEach(function (candidate) {
+          var score = scoreCandidate(query, normalizeText(candidate));
+          if (score > bestScore) bestScore = score;
+        });
+
+        return { intent: intent, score: bestScore };
+      });
+
+      return ranked.sort(function (a, b) { return b.score - a.score; });
+    }
+
+    function analyzeQuery(rawQuery) {
+      var ranked = rankIntents(rawQuery);
+      var query = normalizeText(rawQuery);
+      if (!ranked.length || ranked[0].score < 0.24) {
+        return {
+          topic: '',
+          confidence: 0,
+          canonicalQuery: '',
+          correctedQuery: '',
+          expansions: []
+        };
+      }
+
+      var top = ranked[0];
+      var corrected = '';
+      if (query && normalizeText(top.intent.query) !== query && top.score >= 0.45) {
+        corrected = top.intent.query;
+      }
+
+      return {
+        topic: top.intent.topic,
+        confidence: top.score,
+        canonicalQuery: top.intent.query,
+        correctedQuery: corrected,
+        expansions: top.intent.expansions || []
+      };
+    }
+
+    function getRecentSearches() {
+      try {
+        var raw = localStorage.getItem(RECENT_SEARCH_KEY);
+        var parsed = raw ? JSON.parse(raw) : [];
+        return Array.isArray(parsed) ? parsed : [];
+      } catch (error) {
+        return [];
+      }
+    }
+
+    function saveRecentSearch(query) {
+      var value = (query || '').trim();
+      if (!value) return;
+      var recents = getRecentSearches().filter(function (item) {
+        return normalizeText(item) !== normalizeText(value);
+      });
+      recents.unshift(value);
+      try {
+        localStorage.setItem(RECENT_SEARCH_KEY, JSON.stringify(recents.slice(0, 5)));
+      } catch (error) {
+        return;
+      }
+    }
+
+    function buildSuggestions(rawQuery) {
+      var query = (rawQuery || '').trim();
+      var usedTopics = {};
+
+      if (!query) {
+        var recent = getRecentSearches().map(function (item) {
+          var analysis = analyzeQuery(item);
+          return {
+            query: item,
+            topic: analysis.topic,
+            meta: analysis.topic ? 'Recent search' : 'Recent free-text search',
+            badge: 'Recent'
+          };
+        });
+
+        recent.forEach(function (item) {
+          if (item.topic) usedTopics[item.topic] = true;
+        });
+
+        var popular = SEARCH_INTENTS.filter(function (intent) {
+          return intent.popular && !usedTopics[intent.topic];
+        }).slice(0, 4).map(function (intent) {
+          return {
+            query: intent.query,
+            topic: intent.topic,
+            meta: intent.preview,
+            badge: 'Popular'
+          };
+        });
+
+        return recent.concat(popular).slice(0, 6);
+      }
+
+      var ranked = rankIntents(query).filter(function (item) {
+        return item.score >= 0.18;
+      }).slice(0, 6);
+
+      if (!ranked.length) {
+        return SEARCH_INTENTS.filter(function (intent) {
+          return intent.popular;
+        }).slice(0, 4).map(function (intent) {
+          return {
+            query: intent.query,
+            topic: intent.topic,
+            meta: intent.preview,
+            badge: 'Popular'
+          };
+        });
+      }
+
+      return ranked.map(function (item) {
+        var badge = '';
+        var normalizedInput = normalizeText(query);
+        var normalizedCanonical = normalizeText(item.intent.query);
+        if (normalizedInput && normalizedCanonical !== normalizedInput && item.score >= 0.45) {
+          badge = 'Suggested';
+        }
+        return {
+          query: item.intent.query,
+          topic: item.intent.topic,
+          meta: item.intent.preview,
+          badge: badge
+        };
+      });
+    }
+
+    function highlightSuggestion(text, rawQuery) {
+      var query = (rawQuery || '').trim();
+      if (!query) return escapeHtml(text);
+      var start = text.toLowerCase().indexOf(query.toLowerCase());
+      if (start === -1) return escapeHtml(text);
+      var end = start + query.length;
+      return escapeHtml(text.slice(0, start)) +
+        '<mark>' + escapeHtml(text.slice(start, end)) + '</mark>' +
+        escapeHtml(text.slice(end));
+    }
+
+    function wrapWithKaiOverview(html) {
+      return kaiOverviewHeader + html;
+    }
+
+    function showContentAfterDelay(fn) {
+      var bodyEl = document.getElementById('resultsBody');
+      if (bodyEl) bodyEl.innerHTML = loadingHTML;
+      setTimeout(fn, RESPONSE_DELAY_MS);
+    }
+
+    function setSourcesCard(show, htmlOverride) {
+      var sourcesCard = document.getElementById('sourcesCard');
+      if (!sourcesCard) return;
+      if (!show) {
+        sourcesCard.style.display = 'none';
+        return;
+      }
+      sourcesCard.style.display = '';
+      sourcesCard.innerHTML = htmlOverride || defaultSourcesHTML;
+    }
+
+    function getTopicContent(topic) {
+      if (topic === 'health-benefits') return healthBenefitsHTML;
+      if (topic === 'hr-cases') return hrCasesHTML;
+      if (topic === 'w2-prep') return w2PrepHTML;
+      if (topic === 'holiday-calendar') return holidayCalendarHTML;
+      if (topic === 'time-off') return timeOffHTML;
+      if (topic === 'retirement') return retirementHTML;
+      if (topic === 'tort') return tortHTML;
+      if (topic === 'medical-leave-extend') return medicalLeaveHTML;
+      if (topic === 'compensation-philosophy') return compensationPhilosophyHTML;
+      if (topic === 'laptop-sick-leave') return laptopSickLeaveHTML;
+      if (topic === 'robert-hitomi') return robertHitomiHTML;
+      if (topic === 'it-help') return itHelpHTML;
+      return '';
+    }
+
+    var MORE_RESULTS = {
+      'tort': [
+        { source: 'tort.kp.org › approver', url: '#', title: 'TORT Approver Login Page — Time Off Request Tracking', snippet: 'Log in to the TORT approver portal to review, approve, deny, or hold employee time-off requests.' },
+        { source: 'mykp.kp.org › hr › time › tort › user-guide', url: '#', title: 'TORT User Guide — Step-by-Step Instructions', snippet: 'Comprehensive guide covering how to submit, approve, and manage time-off requests using the TORT system.' },
+        { source: 'mykp.kp.org › hr › time › tort › troubleshooting', url: '#', title: 'Troubleshooting TORT Access Issues — KP HR', snippet: 'Resolve common TORT errors including "No approver on record", login problems, and LOA-related access restrictions.' },
+        { source: 'mykp.kp.org › hr › time › tort › submit', url: '#', title: 'Submitting Time Off via TORT (GA, NW, SCAL)', snippet: 'Instructions for employees in Georgia, Northwest, and Southern California regions on how to submit time-off requests through TORT.' },
+        { source: 'mykp.kp.org › hr › time › tort › manager-guide', url: '#', title: 'Manager Guide: Processing Time Off Requests in TORT', snippet: 'How managers and supervisors can process, approve, and track team time-off requests in the TORT system.' }
+      ],
+      'medical-leave-extend': [
+        { source: 'hrconnect.kp.org › leave › administrator', url: '#', title: 'Contact the Leave Administrator — HRConnect', snippet: 'Reach out to KP\'s leave administrator to report a leave extension, update your return-to-work date, and provide updated medical documentation.' },
+        { source: 'mykp.kp.org › hr › time › leave › fmla', url: '#', title: 'FMLA & CFRA Leave Guide — Kaiser Permanente', snippet: 'Understand your rights and responsibilities under FMLA and California CFRA, including extension eligibility and notice requirements.' },
+        { source: 'mykp.kp.org › hr › time › leave › return-to-work', url: '#', title: 'Return to Work Process After Leave', snippet: 'Steps employees and managers must complete before and after returning from a leave of absence, including fitness-for-duty clearance.' },
+        { source: 'mykp.kp.org › hr › time › leave › documentation', url: '#', title: 'Required Leave Documentation — What to Submit', snippet: 'Find out which medical forms and certifications are required to support a leave extension and how to submit them.' },
+        { source: 'mykp.kp.org › hr › time › leave › faq', url: '#', title: 'Leave of Absence FAQs — MyKP', snippet: 'Answers to common questions about leave duration, pay continuation, benefits during leave, and what happens if leave is denied.' }
+      ],
+      'compensation-philosophy': [
+        { source: 'mykp.kp.org › hr › money › compensation › philosophy', url: '#', title: 'KP Compensation Philosophy Overview', snippet: 'Kaiser Permanente\'s approach to fair, market-competitive, and performance-based pay for all employees and managers.' },
+        { source: 'mykp.kp.org › hr › money › compensation › salary-range', url: '#', title: 'Salary Range & Pay Transparency Information', snippet: 'Learn how to request your salary range information, understand pay bands, and view ranges posted on internal job listings.' },
+        { source: 'mykp.kp.org › hr › money › compensation › merit', url: '#', title: 'Merit Review & Annual Pay Increase Process', snippet: 'Understand how merit increases are determined, the review cycle, and how performance ratings impact pay decisions.' },
+        { source: 'mykp.kp.org › hr › benefits › total-rewards', url: '#', title: 'My Total Rewards — Full Compensation Value', snippet: 'View the complete monetary value of your compensation and benefits package, including retirement, health, and other rewards.' },
+        { source: 'mykp.kp.org › hr › money › compensation › pay-bands', url: '#', title: 'Job Level & Pay Band Information', snippet: 'Explore how jobs are classified into pay bands and levels, and what factors determine where you fall within your band.' }
+      ],
+      'laptop-sick-leave': [
+        { source: 'servicenow.kp.org', url: '#', title: 'ServiceNow IT Service Portal — KP Technology', snippet: 'Submit IT tickets, track requests, and find self-service solutions for technology issues through the KP ServiceNow portal.' },
+        { source: 'servicenow.kp.org › computer-hardware-issue', url: '#', title: 'Submit a Computer Hardware Issue — ServiceNow', snippet: 'Report laptop, desktop, or peripheral hardware problems. Select "PC – Laptop" and provide your asset tag or serial number.' },
+        { source: 'mykp.kp.org › hr › time › timeoff › sick-leave', url: '#', title: 'Sick Leave Request — How to Submit in Workday', snippet: 'Instructions for submitting a sick day or extended sick leave request, including retroactive submissions for missed days.' },
+        { source: 'hrconnect.kp.org › leave › documents', url: '#', title: 'Leave of Absence — Upload Required Documents via My Cases', snippet: 'Upload doctor notes, certifications, and other required leave documentation through the My Cases portal in HRConnect.' },
+        { source: 'mykp.kp.org › it › equipment › replacement-policy', url: '#', title: 'IT Equipment Replacement Policy', snippet: 'Understand eligibility for laptop replacement, the loaner device process, and timelines for hardware repair or swap.' }
+      ],
+    };
+
+    function getMoreResultsHTML(topic) {
+      var results = MORE_RESULTS[topic];
+      if (!results || !results.length) return '';
+      var items = results.map(function (r) {
+        return '<li class="more-result-item">' +
+          '<a class="more-result-title" href="' + escapeHtml(r.url) + '" target="_blank" rel="noopener noreferrer">' + escapeHtml(r.title) + '</a>' +
+          '<p class="more-result-snippet">' + r.snippet + '</p>' +
+          '</li>';
+      }).join('');
+      return '<div class="more-results">' +
+        '<h2 class="more-results-heading">More results</h2>' +
+        '<ol class="more-results-list">' + items + '</ol>' +
+        '</div>';
+    }
+
+    function executeSearch(rawQuery, options) {
+      if (!resultsEl) return;
+      var opts = options || {};
+      var query = (rawQuery || '').trim();
+      var analysis = analyzeQuery(query);
+      var topic = opts.forceTopic || (opts.skipTopicRouting ? '' : analysis.topic);
+      var corrected = opts.correctedOverride || '';
+
+      if (!opts.skipTopicRouting && !corrected && opts.allowCorrection !== false &&
+        analysis.correctedQuery &&
+        normalizeText(analysis.correctedQuery) !== normalizeText(query) &&
+        analysis.confidence >= 0.45) {
+        corrected = analysis.correctedQuery;
+      }
+
+      if (!opts.skipTopicRouting && !topic && corrected) {
+        var correctedAnalysis = analyzeQuery(corrected);
+        topic = correctedAnalysis.topic || topic;
+        if (correctedAnalysis.topic) {
+          analysis = correctedAnalysis;
+        }
+      }
+
+      if (topic && !analysis.expansions.length) {
+        var topicIntent = getIntentByTopic(topic);
+        if (topicIntent) {
+          analysis.expansions = topicIntent.expansions || [];
+          analysis.canonicalQuery = topicIntent.query;
+        }
+      }
+      if (!query && !topic) {
+        var wasKaiMode = document.getElementById('kaiChatView') && document.getElementById('kaiChatView').classList.contains('is-visible');
+        if (resultsEl) resultsEl.innerHTML = resultsOriginalHTML;
+        setSourcesCard(true);
+        currentChatTopic = '';
+        currentChatInitialQuery = '';
+        chatMessages = [{ role: 'assistant', content: toFullContentForChat(document.getElementById('resultsBody').innerHTML) }];
+        if (wasKaiMode) {
+          var rb = document.getElementById('resultsBody');
+          var kcv = document.getElementById('kaiChatView');
+          if (rb) rb.classList.add('results-view-hidden');
+          if (kcv) {
+            kcv.classList.add('is-visible');
+            renderChatMessages();
+          }
+        }
+        return;
+      }
+
+      var input = document.getElementById('searchInput2');
+      if (input && query) {
+        input.value = corrected && opts.keepOriginalInput !== true ? corrected : query;
+      }
+
+      var content = getTopicContent(topic);
+      if (topic && content) {
+        if (query && !opts.skipHistory) saveRecentSearch(query);
+        showContentAfterDelay(function () {
+          var bodyEl = document.getElementById('resultsBody');
+          var chatHTML = wrapWithKaiOverview(content);
+          var displayHTML = chatHTML + getMoreResultsHTML(topic);
+          if (bodyEl) bodyEl.innerHTML = displayHTML;
+          currentChatTopic = topic;
+          currentChatInitialQuery = query;
+          chatMessages = [
+            { role: 'assistant', content: toFullContentForChat(chatHTML) }
+          ];
+          if (document.getElementById('kaiChatView') && document.getElementById('kaiChatView').classList.contains('is-visible')) {
+            renderChatMessages();
+          }
+          if (topic === 'tort') {
+            setSourcesCard(true, tortSourcesSidebarHTML);
+          } else if (topic === 'medical-leave-extend') {
+            setSourcesCard(true, medicalLeaveSourcesSidebarHTML);
+          } else if (topic === 'compensation-philosophy') {
+            setSourcesCard(true, compensationPhilosophySourcesSidebarHTML);
+          } else if (topic === 'laptop-sick-leave') {
+            setSourcesCard(true, laptopSickLeaveSourcesSidebarHTML);
+          } else if (topic === 'robert-hitomi') {
+            setSourcesCard(true, robertHitomiSourcesSidebarHTML);
+          } else {
+            setSourcesCard(false);
+          }
+        });
+        return;
+      }
+
+      if (query && !opts.skipHistory) saveRecentSearch(query);
+      showContentAfterDelay(function () {
+        var wasKaiMode = document.getElementById('kaiChatView') && document.getElementById('kaiChatView').classList.contains('is-visible');
+        if (resultsEl) resultsEl.innerHTML = resultsOriginalHTML;
+        setSourcesCard(true);
+        currentChatTopic = '';
+        currentChatInitialQuery = query;
+        chatMessages = [{ role: 'assistant', content: toFullContentForChat(document.getElementById('resultsBody').innerHTML) }];
+        if (wasKaiMode) {
+          var rb = document.getElementById('resultsBody');
+          var kcv = document.getElementById('kaiChatView');
+          if (rb) rb.classList.add('results-view-hidden');
+          if (kcv) {
+            kcv.classList.add('is-visible');
+            renderChatMessages();
+          }
+        }
+      });
+    }
+
+    (function initAutocomplete2() {
+      var input = document.getElementById('searchInput2');
+      var dropdown = document.getElementById('autocomplete2');
+      var predictHint = document.getElementById('predictHint2');
+      if (!input || !dropdown) return;
+      var activeIndex = -1;
+      var currentSuggestions = [];
+
+      function renderSuggestions(items, rawQuery) {
+        var iconSvg = '<svg class="kp-autocomplete-item-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line x1="14.5" y1="14.5" x2="19" y2="19" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>';
+        dropdown.innerHTML = items.map(function (item, i) {
+          var badge = item.badge ? '<span class="kp-autocomplete-badge">' + escapeHtml(item.badge) + '</span>' : '';
+          return '<div class="kp-autocomplete-item" role="option" tabindex="-1" data-index="' + i + '" data-query="' + escapeHtml(item.query || '') + '" data-topic="' + escapeHtml(item.topic || '') + '">' +
+            iconSvg +
+            '<div class="kp-autocomplete-item-main">' +
+            '<div class="kp-autocomplete-item-title">' + highlightSuggestion(item.query, rawQuery) + '</div>' +
+            '<div class="kp-autocomplete-item-meta">' + escapeHtml(item.meta || '') + '</div>' +
+            '</div>' +
+            badge +
+            '</div>';
+        }).join('');
+        activeIndex = -1;
+      }
+
+      function showDropdown(items, rawQuery) {
+        currentSuggestions = items;
+        if (!items.length) {
+          dropdown.classList.remove('is-visible');
+          if (predictHint) predictHint.textContent = '';
+          return;
+        }
+        renderSuggestions(items, rawQuery);
+        dropdown.classList.add('is-visible');
+
+        if (predictHint) predictHint.textContent = '';
+      }
+
+      function hideDropdown() {
+        dropdown.classList.remove('is-visible');
+        activeIndex = -1;
+      }
+
+      function selectSuggestion(index) {
+        var selected = currentSuggestions[index];
+        if (!selected) return;
+        input.value = selected.query;
+        hideDropdown();
+        saveRecentSearch(selected.query);
+        executeSearch(selected.query, {
+          forceTopic: selected.topic,
+          allowCorrection: false
+        });
+      }
+
+      input.addEventListener('focus', function () {
+        showDropdown(buildSuggestions(input.value), input.value);
+      });
+
+      input.addEventListener('input', function () {
+        showDropdown(buildSuggestions(input.value), input.value);
+      });
+
+      input.addEventListener('blur', function (e) {
+        var related = e.relatedTarget;
+        if (related && dropdown.contains(related)) return;
+        setTimeout(function () {
+          if (document.activeElement && dropdown.contains(document.activeElement)) return;
+          hideDropdown();
+        }, 150);
+      });
+
+      input.addEventListener('keydown', function (e) {
+        var items = dropdown.querySelectorAll('.kp-autocomplete-item');
+
+        if (!items.length) return;
+        if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          activeIndex = Math.min(activeIndex + 1, items.length - 1);
+          items.forEach(function (el, i) { el.classList.toggle('is-active', i === activeIndex); });
+          items[activeIndex].scrollIntoView({ block: 'nearest' });
+        } else if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          activeIndex = Math.max(activeIndex - 1, -1);
+          items.forEach(function (el, i) { el.classList.toggle('is-active', i === activeIndex); });
+        } else if (e.key === 'Enter' && activeIndex >= 0 && items[activeIndex]) {
+          e.preventDefault();
+          selectSuggestion(activeIndex);
+        } else if (e.key === 'Escape') {
+          hideDropdown();
+        }
+      });
+
+      function handleSuggestionSelect(item) {
+        if (!item) return;
+        var topic = item.getAttribute('data-topic');
+        var query = item.getAttribute('data-query');
+        if (topic && query) {
+          input.value = query;
+          hideDropdown();
+          saveRecentSearch(query);
+          executeSearch(query, { forceTopic: topic, allowCorrection: false });
+        } else {
+          selectSuggestion(Number(item.getAttribute('data-index')));
+        }
+      }
+
+      dropdown.addEventListener('mousedown', function (e) {
+        var item = e.target.closest('.kp-autocomplete-item');
+        if (!item) return;
+        e.stopPropagation();
+        item.focus();
+        handleSuggestionSelect(item);
+      });
+
+      document.addEventListener('click', function (e) {
+        if (!e.target.closest('.kp-search-bar-wrapper')) {
+          hideDropdown();
+        }
+      });
+    })();
+
+    var searchForm2 = document.getElementById('searchForm2');
+    if (searchForm2) {
+      searchForm2.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var searchInput = document.getElementById('searchInput2');
+        var ac = document.getElementById('autocomplete2');
+        if (ac) ac.classList.remove('is-visible');
+        executeSearch(searchInput ? searchInput.value : '', { keepOriginalInput: true });
+      });
+    }
+
+    var searchClearBtn = document.querySelector('.kp-search-clear');
+    if (searchClearBtn) {
+      searchClearBtn.addEventListener('click', function () {
+        document.getElementById('searchInput2').value = '';
+        document.getElementById('searchInput2').focus();
+        executeSearch('', { skipHistory: true, allowCorrection: false });
+      });
+    }
+
+    function scrollChatToLatest() {
+      var container = document.getElementById('kaiChatMessages');
+      if (!container) return;
+      container.scrollTop = container.scrollHeight;
+      requestAnimationFrame(function () {
+        if (!container) return;
+        container.scrollTop = container.scrollHeight;
+        var last = container.lastElementChild;
+        if (last) last.scrollIntoView({ block: 'end', behavior: 'auto' });
+      });
+    }
+
+    function renderChatMessages() {
+      var container = document.getElementById('kaiChatMessages');
+      if (!container) return;
+      container.innerHTML = chatMessages.map(function (msg) {
+        var label = msg.role === 'user' ? 'You' : 'KAI';
+        var content = msg.role === 'user' ? escapeHtml(msg.content) : msg.content;
+        if (msg.role === 'assistant') {
+          return '<div class="kai-chat-msg assistant">' +
+            '<div class="kai-chat-avatar"><img src="Kai-icon.png" alt="KAI" /></div>' +
+            '<div class="kai-chat-msg-body">' +
+            '<div class="kai-chat-msg-label">' + label + '</div>' +
+            '<div class="kai-chat-msg-bubble">' + content + '</div>' +
+            '</div>' +
+            '</div>';
+        }
+        return '<div class="kai-chat-msg ' + msg.role + '">' +
+          '<div class="kai-chat-msg-label">' + label + '</div>' +
+          '<div class="kai-chat-msg-bubble">' + content + '</div>' +
+          '</div>';
+      }).join('');
+      scrollChatToLatest();
+    }
+
+    function toFullContentForChat(html) {
+      if (!html || html.indexOf('response-preview') === -1) return html;
+      return html
+        .replace(/<div class="response-preview">\s*<div class="fade-overlay"><\/div>\s*/g, '')
+        .replace(/<\/div>\s*<div class="show-more-wrap">[\s\S]*?<\/div>\s*/g, '')
+        .replace(/<div class="response-sources-below">[\s\S]*?<\/div>\s*/g, '');
+    }
+
+    function getFollowUpResponse(query) {
+      var analysis = analyzeQuery(query);
+      var topic = analysis.topic;
+      var content = getTopicContent(topic);
+      if (topic && content) {
+        content = toFullContentForChat(content);
+        return '<h2 class="results-title kai-overview-title" style="font-size:18px;margin-bottom:12px;">KAI Overview</h2>' + content;
+      }
+      return '<p>I found some general information. For more specific answers, try searching for topics like Health Benefits, HR Cases, Time Off, TORT, W2 Preparation, Holiday Calendar, Retirement, or Medical Leave.</p>';
+    }
+
+    document.querySelectorAll('.kp-tab').forEach(function (tab) {
+      tab.addEventListener('click', function () {
+        document.querySelectorAll('.kp-tab').forEach(function (t) {
+          t.classList.remove('kp-tab-active');
+        });
+        tab.classList.add('kp-tab-active');
+        var tabId = tab.getAttribute('data-tab');
+        var resultsBody = document.getElementById('resultsBody');
+        var kaiChatView = document.getElementById('kaiChatView');
+        if (tabId === 'kai') {
+          if (resultsBody) resultsBody.classList.add('results-view-hidden');
+          if (kaiChatView) {
+            kaiChatView.classList.add('is-visible');
+            if (chatMessages.length === 0) {
+              chatMessages = [{ role: 'assistant', content: toFullContentForChat(document.getElementById('resultsBody').innerHTML) }];
+            }
+            renderChatMessages();
+          }
+        } else {
+          if (resultsBody) resultsBody.classList.remove('results-view-hidden');
+          if (kaiChatView) kaiChatView.classList.remove('is-visible');
+        }
+      });
+    });
+
+    document.addEventListener('submit', function (e) {
+      if (!e.target || e.target.id !== 'kaiChatForm') return;
+      e.preventDefault();
+      var input = document.getElementById('kaiChatInput');
+      var sendBtn = document.getElementById('kaiChatSend');
+      if (!input || !sendBtn) return;
+      var query = (input.value || '').trim();
+      if (!query) return;
+
+      chatMessages.push({ role: 'user', content: query });
+      input.value = '';
+      renderChatMessages();
+
+      sendBtn.disabled = true;
+      chatMessages.push({ role: 'assistant', content: '<div class="kai-chat-loading"><span class="kai-chat-loading-dot"></span><span class="kai-chat-loading-dot"></span><span class="kai-chat-loading-dot"></span><span>Thinking...</span></div>' });
+      renderChatMessages();
+
+      setTimeout(function () {
+        chatMessages.pop();
+        var response = getFollowUpResponse(query);
+        chatMessages.push({ role: 'assistant', content: response });
+        renderChatMessages();
+        var btn = document.getElementById('kaiChatSend');
+        if (btn) btn.disabled = false;
+      }, RESPONSE_DELAY_MS);
+    });
+
+    // Time Off formatted response
+    var timeOffHTML = '<div class="time-off-response">' +
+      '<p class="intro">Here is your available time off based on what we have now:</p>' +
+      '<div class="time-off-card">' +
+      '<h3>Time Off</h3>' +
+      '<div class="plan-name">PTO National Functions</div>' +
+      '<div class="balance">120.50 Hours</div>' +
+      '<div class="time-off-row"><span class="label">Plan Type:</span> Accrual</div>' +
+      '<div class="time-off-row"><span class="label">Accrual Rate:</span> 4.50 Hours</div>' +
+      '<div class="time-off-row"><span class="label">Accrual Cycle:</span> Bi-Weekly</div>' +
+      '</div>' +
+      '<div class="time-off-card">' +
+      '<h3>Holidays</h3>' +
+      '<div class="plan-name">Floating Holiday PO KPIT</div>' +
+      '<div class="balance">24 Hours</div>' +
+      '<div class="time-off-row"><span class="label">Plan Type:</span> Accrual</div>' +
+      '<div class="time-off-row"><span class="label">Accrual Rate:</span> 12.5 Hours</div>' +
+      '<div class="time-off-row"><span class="label">Accrual Cycle:</span> Annual</div>' +
+      '</div>' +
+      '<div class="time-off-card">' +
+      '<h3>Sick</h3>' +
+      '<div class="plan-name">ESL National Functions</div>' +
+      '<div class="balance">80.125 Hours</div>' +
+      '<div class="time-off-row"><span class="label">Plan Type:</span> Accrual</div>' +
+      '<div class="time-off-row"><span class="label">Accrual Rate:</span> 3.125 Hours</div>' +
+      '<div class="time-off-row"><span class="label">Accrual Cycle:</span> Bi-Weekly</div>' +
+      '</div>' +
+      '<div class="time-off-card">' +
+      '<h3>Other</h3>' +
+      '<div class="plan-name">PSL CA Ben Eligible - Tracking Only</div>' +
+      '<div class="balance">24 Hours</div>' +
+      '<div class="time-off-row"><span class="label">Plan Type:</span> Accrual</div>' +
+      '</div>' +
+      '<p class="outro">See <a href="https://h1.avaamo.com/web/#messenger/conversations/9a3cc77767c324ea5fb2825ae191c8af?messageUuid=e6cad7f0-9045-4db7-b2f0-22f6e1938608:~:text=See-,Time%20off%20(Absences),-for%20more%20information" target="_blank" rel="noopener noreferrer">Time off (Absences)</a> for more information.</p>' +
+      '</div>';
+
+    // TORT formatted response
+    var tortSource1 = 'https://h1.avaamo.com/llamb/messages/8002c2ef-ce2b-43b9-98ac-3392292b4a25/documents/7f9ee0a4-00ca-43be-bad4-792b4d966306?lt=ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SjFjMlZ5SWpwN0lteGhlV1Z5WDJsa0lqb2lOR1ZrTldVMU5EWXRNalprTkMwME5tUmpMV0U0TTJNdFpEZ3lORFZsTkdKaVpXWmhJbjBzSW1WNGNDSTZNVGMzTXpFMk1qSTFNMzAubkZ1VHBId0VRbER2blotSjNFTUFtbUJyN3NvUUhkc2lpbGg1TGNKbmFSYw==&page=0';
+    var tortSource2 = 'https://h1.avaamo.com/llamb/messages/8002c2ef-ce2b-43b9-98ac-3392292b4a25/documents/196aafb8-fda1-4150-a3c0-a434683a874b?lt=ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SjFjMlZ5SWpwN0lteGhlV1Z5WDJsa0lqb2lOR1ZrTldVMU5EWXRNalprTkMwME5tUmpMV0U0TTJNdFpEZ3lORFZsTkdKaVpXWmhJbjBzSW1WNGNDSTZNVGMzTXpFMk1qSTFNMzAubkZ1VHBId0VRbER2blotSjNFTUFtbUJyN3NvUUhkc2lpbGg1TGNKbmFSYw==&page=0';
+    var tortSource3 = 'https://h1.avaamo.com/llamb/messages/8002c2ef-ce2b-43b9-98ac-3392292b4a25/documents/c292b56a-6142-4f61-b88a-1ab49281b98e?lt=ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SjFjMlZ5SWpwN0lteGhlV1Z5WDJsa0lqb2lOR1ZrTldVMU5EWXRNalprTkMwME5tUmpMV0U0TTJNdFpEZ3lORFZsTkdKaVpXWmhJbjBzSW1WNGNDSTZNVGMzTXpFMk1qSTFNMzAubkZ1VHBId0VRbER2blotSjNFTUFtbUJyN3NvUUhkc2lpbGg1TGNKbmFSYw==&page=0';
+    var tortSource4 = 'https://h1.avaamo.com/llamb/messages/8002c2ef-ce2b-43b9-98ac-3392292b4a25/documents/d71f3d97-bcb8-4328-98bd-1ef2d06c6d21?lt=ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SjFjMlZ5SWpwN0lteGhlV1Z5WDJsa0lqb2lOR1ZrTldVMU5EWXRNalprTkMwME5tUmpMV0U0TTJNdFpEZ3lORFZsTkdKaVpXWmhJbjBzSW1WNGNDSTZNVGMzTXpFMk1qSTFNMzAubkZ1VHBId0VRbER2blotSjNFTUFtbUJyN3NvUUhkc2lpbGg1TGNKbmFSYw==&page=0';
+
+    var tortSourcesSidebarHTML = '<h2>Sources</h2>' +
+      '<ul class="side-links">' +
+      '<li><a href="' + tortSource1 + '" target="_blank" rel="noopener noreferrer">Time Off Request Tracking TORT Approve Time Off Request</a></li>' +
+      '<li><a href="' + tortSource2 + '" target="_blank" rel="noopener noreferrer">Time Off Request Tracking TORT No approver on record</a></li>' +
+      '<li><a href="' + tortSource3 + '" target="_blank" rel="noopener noreferrer">TORT Request time off GA NW SCAL</a></li>' +
+      '<li><a href="' + tortSource4 + '" target="_blank" rel="noopener noreferrer">TORT requests management</a></li>' +
+      '</ul>';
+
+    var tortSourcesBelowHTML = '<ul class="source-list">' +
+      '<li class="source-item"><a href="' + tortSource1 + '" target="_blank" rel="noopener noreferrer" class="source-title">Time Off Request Tracking TORT Approve Time Off Request</a><p class="source-desc">Approving time off requests and approver workflow in TORT.</p></li>' +
+      '<li class="source-item"><a href="' + tortSource2 + '" target="_blank" rel="noopener noreferrer" class="source-title">Time Off Request Tracking TORT No approver on record</a><p class="source-desc">Troubleshooting when no approver is on record.</p></li>' +
+      '<li class="source-item"><a href="' + tortSource3 + '" target="_blank" rel="noopener noreferrer" class="source-title">TORT Request time off GA NW SCAL</a><p class="source-desc">How to request time off in GA, NW, and SCAL regions.</p></li>' +
+      '<li class="source-item"><a href="' + tortSource4 + '" target="_blank" rel="noopener noreferrer" class="source-title">TORT requests management</a><p class="source-desc">Managing time off requests as a manager.</p></li>' +
+      '</ul>';
+
+    var tortHTML = '<div class="response-with-sources tort-response">' +
+      '<h2 class="title">Time Off Request Tracking (TORT)</h2>' +
+      '<div class="response-preview">' +
+      '<div class="fade-overlay"></div>' +
+      '<div class="tort-content">' +
+      '<p>Here is the information on Time Off Request Tracking (TORT):</p>' +
+      '<h3>Approving Time Off Requests</h3>' +
+      '<p>Log on to the Time Off Request Tracking (TORT) approver page.</p>' +
+      '<p>Click on the blue link for date(s) in the Date(s) Requested column under the Incoming Time Off Requests tab. The page should reposition to the Approver Time Off Detail section showing the selected request detail.</p>' +
+      '<p class="note">Note: The Approve radio button is pre-selected.</p>' +
+      '<p>Click Submit.</p>' +
+      '<p class="note">Note: An approver may also deny, hold, or return a request by changing to the appropriate radio button before clicking Submit.</p>' +
+      '<h3>No Approver on Record</h3>' +
+      '<p><strong>Symptoms:</strong> Receiving error message when trying to access TORT: "No approver on record".</p>' +
+      '<h4>Resolution:</h4>' +
+      '<p><strong>Incorrect NUID on Time Card:</strong></p>' +
+      '<ul><li>Have your manager validate your NUID is accurate on your TIME Card profile.</li><li>Send an email to NPS-National-Timekeeping@kp.org to correct the NUID - include your manager in the email.</li><li>Once the change is made, TORT access should be restored within 2 business days.</li></ul>' +
+      '<p><strong>Employee(s) on Leave of Absence (LOA):</strong></p>' +
+      '<ul><li>Employees currently on, or recently returning from LOA cannot utilize TORT.</li><li>Once the HRConnect form 1510 (Return from Leave) is submitted, access to TORT should be restored in 7-12 business days.</li></ul>' +
+      '<p><strong>Inactive approver/manager is no longer with KP:</strong></p>' +
+      '<ul><li>Manager/Supervisor will need to contact NPS-National-Timekeeping@kp.org to assign a new approver.</li><li>Once the changes are made, access to TORT should be restored within 3 business days.</li></ul>' +
+      '<p>If none of the above apply, please send an email to NAT-TORT@kp.org.</p>' +
+      '<h3>Requesting Time Off</h3>' +
+      '<p>Use TORT to submit time off requests in regions GA, NW, SCAL. More details on this tool can be found <a href="' + tortSource3 + '" target="_blank" rel="noopener noreferrer">here</a>.</p>' +
+      '<h3>Managing Time Off Requests</h3>' +
+      '<p>Managers can use TORT to process time off requests for employees. More details on this tool can be found <a href="' + tortSource4 + '" target="_blank" rel="noopener noreferrer">here</a>.</p>' +
+      '</div>' +
+      '</div>' +
+      '<div class="show-more-wrap">' +
+      '<button type="button" class="show-more-btn" data-expanded="false"><span class="show-more-text">Show more</span> <span class="chevron"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5l3 3 3-3"/></svg></span></button>' +
+      '</div>' +
+      '</div>';
+
+    var medicalLeaveSource = 'https://h1.avaamo.com/llamb/messages/e5ed7bdd-a0bb-4d86-b74c-8432484605e1/documents/9f54c559-7811-417d-b960-94a3907e4c35?lt=ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SjFjMlZ5SWpwN0lteGhlV1Z5WDJsa0lqb2lZak5sTmpNNU1qUXRPVFkzTkMwME1UbGxMV0kxTVRBdFlURXlOVFZrTnpFMlkyUXhJbjBzSW1WNGNDSTZNVGMzTXpFMk1URXhPWDAuN04xalJLcGJKUDA5aHNib1BqNG1jbExFb2RNVndrdXJTZzRFaDMzdTkwbw==&page=0';
+
+    var medicalLeaveSourcesSidebarHTML = '<h2>Sources</h2>' +
+      '<ul class="side-links">' +
+      '<li><a href="' + medicalLeaveSource + '" target="_blank" rel="noopener noreferrer">What if my doctor has extended my leave return to work date</a></li>' +
+      '</ul>';
+
+    var medicalLeaveSourcesBelowHTML = '<ul class="source-list">' +
+      '<li class="source-item"><a href="' + medicalLeaveSource + '" target="_blank" rel="noopener noreferrer" class="source-title">What if my doctor has extended my leave return to work date</a><p class="source-desc">Steps to extend your medical leave return date and required documentation.</p></li>' +
+      '</ul>';
+
+    var medicalLeaveHTML = '<div class="response-with-sources tort-response">' +
+      '<h2 class="title">Extending Medical Leave</h2>' +
+      '<div class="response-preview">' +
+      '<div class="fade-overlay"></div>' +
+      '<div class="tort-content">' +
+      '<p>To extend a medical leave of absence, you need to follow these steps:</p>' +
+      '<h3>Complete a Leave of Absence Change Request</h3>' +
+      '<p>You must fill out a change request to update your leave with the revised return date.</p>' +
+      '<h3>Notify Your Manager and Claims Administrator</h3>' +
+      '<p>Inform them about your updated work status and any changes in your leave schedule.</p>' +
+      '<h3>Follow the Leave of Absence Process</h3>' +
+      '<p>Ensure you comply with the leave of absence process to report your absence and any changes to the leave administrator, Reliance Matrix.</p>' +
+      '<h3>Provide Necessary Documentation</h3>' +
+      '<p>If required, submit any additional documentation to support the extension of your leave.</p>' +
+      '<p>By following these steps, you can ensure that your medical leave of absence is extended properly and in compliance with Kaiser Permanente\'s policies.</p>' +
+      '<p>For more information, see <a href="' + medicalLeaveSource + '" target="_blank" rel="noopener noreferrer">What if my doctor has extended my leave return to work date</a>.</p>' +
+      '</div>' +
+      '</div>' +
+      '<div class="show-more-wrap">' +
+      '<button type="button" class="show-more-btn" data-expanded="false"><span class="show-more-text">Show more</span> <span class="chevron"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5l3 3 3-3"/></svg></span></button>' +
+      '</div>' +
+      '</div>';
+
+    var compSource1 = 'https://h1.avaamo.com/llamb/messages/1b652b01-64c3-455b-9b4b-7900bdea638c/documents/690d928e-43aa-4b59-9f91-cad7ca294c48?lt=ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SjFjMlZ5SWpwN0lteGhlV1Z5WDJsa0lqb2lOREF4WkRVMk9UUXROalpoTUMwME1qQXpMVGsxWVRVdE5tSTFOelV5WVRnME5tUTRJbjBzSW1WNGNDSTZNVGMzTXpNME5qSTVNbjAuRUpoYmxtTVc0N0ZjMW94NWQ0V09yZ1JFbENpRnNZaFpDOVk0OTROMDFMaw==&page=0';
+    var compSource2 = 'https://h1.avaamo.com/llamb/messages/1b652b01-64c3-455b-9b4b-7900bdea638c/documents/3e7ae59a-1957-4e14-9a6a-ce3b6fe87b1c?lt=ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SjFjMlZ5SWpwN0lteGhlV1Z5WDJsa0lqb2lOREF4WkRVMk9UUXROalpoTUMwME1qQXpMVGsxWVRVdE5tSTFOelV5WVRnME5tUTRJbjBzSW1WNGNDSTZNVGMzTXpNME5qSTVNbjAuRUpoYmxtTVc0N0ZjMW94NWQ0V09yZ1JFbENpRnNZaFpDOVk0OTROMDFMaw==&page=0';
+    var compSource3 = 'https://h1.avaamo.com/llamb/messages/1b652b01-64c3-455b-9b4b-7900bdea638c/documents/a732b6a8-9d2e-4dd8-927d-3d8a75ed992a?lt=ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SjFjMlZ5SWpwN0lteGhlV1Z5WDJsa0lqb2lOREF4WkRVMk9UUXROalpoTUMwME1qQXpMVGsxWVRVdE5tSTFOelV5WVRnME5tUTRJbjBzSW1WNGNDSTZNVGMzTXpNME5qSTVNbjAuRUpoYmxtTVc0N0ZjMW94NWQ0V09yZ1JFbENpRnNZaFpDOVk0OTROMDFMaw==&page=0';
+    var compSource4 = 'https://h1.avaamo.com/llamb/messages/1b652b01-64c3-455b-9b4b-7900bdea638c/documents/b86a3ec9-f371-4f1d-9659-7c56b2e2fcd2?lt=ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SjFjMlZ5SWpwN0lteGhlV1Z5WDJsa0lqb2lOREF4WkRVMk9UUXROalpoTUMwME1qQXpMVGsxWVRVdE5tSTFOelV5WVRnME5tUTRJbjBzSW1WNGNDSTZNVGMzTXpNME5qSTVNbjAuRUpoYmxtTVc0N0ZjMW94NWQ0V09yZ1JFbENpRnNZaFpDOVk0OTROMDFMaw==&page=0';
+
+    var compensationPhilosophySourcesSidebarHTML = '<h2>Sources</h2>' +
+      '<ul class="side-links">' +
+      '<li><a href="' + compSource1 + '" target="_blank" rel="noopener noreferrer">Discussing pay with employee</a></li>' +
+      '<li><a href="' + compSource2 + '" target="_blank" rel="noopener noreferrer">Setting pay</a></li>' +
+      '<li><a href="' + compSource3 + '" target="_blank" rel="noopener noreferrer">Make pay decision</a></li>' +
+      '<li><a href="' + compSource4 + '" target="_blank" rel="noopener noreferrer">Communicate pay</a></li>' +
+      '</ul>';
+
+    var compensationPhilosophySourcesBelowHTML = '<ul class="source-list">' +
+      '<li class="source-item"><a href="' + compSource1 + '" target="_blank" rel="noopener noreferrer" class="source-title">Discussing pay with employee</a><p class="source-desc">Guidance on compensation discussions with employees.</p></li>' +
+      '<li class="source-item"><a href="' + compSource2 + '" target="_blank" rel="noopener noreferrer" class="source-title">Setting pay</a><p class="source-desc">How pay is set and adjusted within the compensation philosophy.</p></li>' +
+      '<li class="source-item"><a href="' + compSource3 + '" target="_blank" rel="noopener noreferrer" class="source-title">Make pay decision</a><p class="source-desc">Process for making pay decisions aligned with market and performance.</p></li>' +
+      '<li class="source-item"><a href="' + compSource4 + '" target="_blank" rel="noopener noreferrer" class="source-title">Communicate pay</a><p class="source-desc">Transparency and communication of pay information to employees.</p></li>' +
+      '</ul>';
+
+    var compensationPhilosophyHTML = '<div class="response-with-sources tort-response">' +
+      '<h2 class="title">Compensation Philosophy</h2>' +
+      '<div class="response-preview">' +
+      '<div class="fade-overlay"></div>' +
+      '<div class="tort-content">' +
+      '<p>Kaiser Permanente is committed to providing fair and competitive compensation to attract, retain, and reward high-performing employees. The compensation philosophy is centered around:</p>' +
+      '<h3>Fair and Equitable Pay</h3>' +
+      '<p>Ensuring that all employees receive fair and equitable pay based on their contributions and performance.</p>' +
+      '<h3>Total Compensation Package</h3>' +
+      '<p>Beyond salary, the compensation package includes medical and health insurance, paid time off (PTO), and retirement and pension benefits. Employees are encouraged to view the monetary value of their total compensation package at my total rewards.</p>' +
+      '<h3>Merit Pay</h3>' +
+      '<p>Reflects the competitive market value of the job and performance, recognizing the skills, experience, and sustained performance of individuals.</p>' +
+      '<h3>Transparency</h3>' +
+      '<p>Managers are required to provide employees with their salary range information upon request, and all job postings include salary range information.</p>' +
+      '<p>These elements ensure that compensation decisions are aligned with Kaiser Permanente\'s philosophy of rewarding top contributors and maintaining a competitive edge in the market.</p>' +
+      '</div>' +
+      '</div>' +
+      '<div class="show-more-wrap">' +
+      '<button type="button" class="show-more-btn" data-expanded="false"><span class="show-more-text">Show more</span> <span class="chevron"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5l3 3 3-3"/></svg></span></button>' +
+      '</div>' +
+      '</div>';
+
+    var laptopSource1 = 'https://h1.avaamo.com/llamb/messages/62af9da0-0e07-4935-ba45-e2ebd1a3d2e1/documents/fc4d9977-d9b1-4b13-a0ca-5806498d89d5?lt=ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SjFjMlZ5SWpwN0lteGhlV1Z5WDJsa0lqb2lNakEwT0RGbVkyUXROR05pWmkwME9UTmxMV0ZpT0dJdE5EYzRPRE16Tm1Wa1pHTTFJbjBzSW1WNGNDSTZNVGMzTXpVd05UY3pNWDAuVWl5b0dfaUJYS2lweGJUeFAyQUFGd24ydHhvS2Z5Tjd1dmFpN05SYnE4NA==&page=0';
+    var laptopSource2 = 'https://h1.avaamo.com/llamb/messages/62af9da0-0e07-4935-ba45-e2ebd1a3d2e1/documents/31bdd1b6-b87f-4186-925d-e66aa0aa83fd?lt=ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SjFjMlZ5SWpwN0lteGhlV1Z5WDJsa0lqb2lNakEwT0RGbVkyUXROR05pWmkwME9UTmxMV0ZpT0dJdE5EYzRPRE16Tm1Wa1pHTTFJbjBzSW1WNGNDSTZNVGMzTXpVd05UY3pNWDAuVWl5b0dfaUJYS2lweGJUeFAyQUFGd24ydHhvS2Z5Tjd1dmFpN05SYnE4NA==&page=0';
+    var laptopSource3 = 'https://h1.avaamo.com/llamb/messages/62af9da0-0e07-4935-ba45-e2ebd1a3d2e1/documents/4efbe97b-0a52-41dc-bdd2-05ab91d61867?lt=ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SjFjMlZ5SWpwN0lteGhlV1Z5WDJsa0lqb2lNakEwT0RGbVkyUXROR05pWmkwME9UTmxMV0ZpT0dJdE5EYzRPRE16Tm1Wa1pHTTFJbjBzSW1WNGNDSTZNVGMzTXpVd05UY3pNWDAuVWl5b0dfaUJYS2lweGJUeFAyQUFGd24ydHhvS2Z5Tjd1dmFpN05SYnE4NA==&page=0';
+
+    var laptopSickLeaveSourcesSidebarHTML = '<h2>Sources</h2>' +
+      '<ul class="side-links">' +
+      '<li><a href="' + laptopSource1 + '" target="_blank" rel="noopener noreferrer">Keyboard on Laptop not working</a></li>' +
+      '<li><a href="' + laptopSource2 + '" target="_blank" rel="noopener noreferrer">Submit leave document</a></li>' +
+      '<li><a href="' + laptopSource3 + '" target="_blank" rel="noopener noreferrer">How to submit required leave document</a></li>' +
+      '</ul>';
+
+    var laptopSickLeaveSourcesBelowHTML = '<ul class="source-list">' +
+      '<li class="source-item"><a href="' + laptopSource1 + '" target="_blank" rel="noopener noreferrer" class="source-title">Keyboard on Laptop not working</a><p class="source-desc">Submitting computer hardware issues through ServiceNow.</p></li>' +
+      '<li class="source-item"><a href="' + laptopSource2 + '" target="_blank" rel="noopener noreferrer" class="source-title">Submit leave document</a><p class="source-desc">How to submit required leave of absence documents.</p></li>' +
+      '<li class="source-item"><a href="' + laptopSource3 + '" target="_blank" rel="noopener noreferrer" class="source-title">How to submit required leave document</a><p class="source-desc">Instructions for uploading documents to your leave case.</p></li>' +
+      '</ul>';
+
+    var laptopSickLeaveHTML = '<div class="response-with-sources tort-response">' +
+      '<h2 class="title">Laptop Issue and Sick Leave Request</h2>' +
+      '<div class="response-preview">' +
+      '<div class="fade-overlay"></div>' +
+      '<div class="tort-content">' +
+      '<p>To address your laptop issue and submit a sick leave request, follow these steps:</p>' +
+      '<h3>For Laptop Issues</h3>' +
+      '<p><strong>Report the Issue:</strong> Go to the ServiceNow Service Portal.</p>' +
+      '<p><strong>Submit a Computer Hardware Issue:</strong> Type "Computer Hardware Issue" in the search bar or <a href="' + laptopSource1 + '" target="_blank" rel="noopener noreferrer">click here</a> to submit issues with desktop hardware.</p>' +
+      '<p><strong>Fill Out Required Information:</strong> Select "PC - Laptop" and describe the problem. Provide the asset tag or serial number of the affected computer.</p>' +
+      '<p><strong>Submit the Request.</strong></p>' +
+      '<h3>For Sick Leave Request</h3>' +
+      '<p><strong>Submit Time Off:</strong> If you forget to submit a time off request or are out sick, you can submit upon your return. Managers/delegates can also submit time off requests on behalf of their employees.</p>' +
+      '<p><strong>Upload Required Documents:</strong> Once your manager submits your leave of absence, a case will be available for you or your manager to upload required documents using My cases. Follow the instructions to upload your document.</p>' +
+      '<p>Ensure to track the progress of your documents from My cases — the case will be updated once your documents are reviewed and accepted by the National Human Resources Service Center (NHRSC).</p>' +
+      '</div>' +
+      '</div>' +
+      '<div class="show-more-wrap">' +
+      '<button type="button" class="show-more-btn" data-expanded="false"><span class="show-more-text">Show more</span> <span class="chevron"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5l3 3 3-3"/></svg></span></button>' +
+      '</div>' +
+      '</div>';
+
+    var hitomiSource = 'https://h1.avaamo.com/llamb/messages/f2591078-d2ca-439f-bd22-6a383b167e7b/documents/db472aac-8cc7-4be3-9d5a-8c9903886f6c?lt=ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SjFjMlZ5SWpwN0lteGhlV1Z5WDJsa0lqb2lNakEwT0RGbVkyUXROR05pWmkwME9UTmxMV0ZpT0dJdE5EYzRPRE16Tm1Wa1pHTTFJbjBzSW1WNGNDSTZNVGMzTWpjM05qWXhPSDAuSEN6UHVhRFVDTTVNM3dLMlVGcWVpYXk0bjVXdkc5cmh0NkhvYnVKSGpIcw==&page=0';
+    var orgChartUrl = 'https://hrconnect.kp.org/wps/poc?urile=wcm:path:/myhr/epfsite/hr/managertools/manage/informationresources/myorg/echartperson_all?SelectedBox=S418994';
+
+    var robertHitomiSourcesSidebarHTML = '<h2>Sources</h2>' +
+      '<ul class="side-links">' +
+      '<li><a href="' + hitomiSource + '" target="_blank" rel="noopener noreferrer">S418994</a></li>' +
+      '</ul>';
+
+    var robertHitomiSourcesBelowHTML = '<ul class="source-list">' +
+      '<li class="source-item"><a href="' + hitomiSource + '" target="_blank" rel="noopener noreferrer" class="source-title">S418994</a><p class="source-desc">Employee profile and organizational chart for Robert K Hitomi.</p></li>' +
+      '</ul>';
+
+    var robertHitomiHTML = '<div class="response-with-sources tort-response">' +
+      '<h2 class="title">Robert K Hitomi</h2>' +
+      '<div class="response-preview">' +
+      '<div class="fade-overlay"></div>' +
+      '<div class="tort-content">' +
+      '<p>Robert K Hitomi is a distinct individual working as the Director of Product Management in the EmSvc HRIS Digital Systems department. He is based at 5810 Owens Dr., Pleasanton, CA 94588, and is identified by NUID S418994. You can reach him via email at <a href="mailto:Robert.K.Hitomi@kp.org">Robert.K.Hitomi@kp.org</a> or by mobile phone at 1-510-424-3635. He is part of the Program Offices region. You can view his organizational chart <a href="' + orgChartUrl + '" target="_blank" rel="noopener noreferrer">here</a>.</p>' +
+      '</div>' +
+      '</div>' +
+      '<div class="show-more-wrap">' +
+      '<button type="button" class="show-more-btn" data-expanded="false"><span class="show-more-text">Show more</span> <span class="chevron"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5l3 3 3-3"/></svg></span></button>' +
+      '</div>' +
+      '</div>';
+
+    // Retirement formatted response
+    var retirementHTML = '<div class="retirement-response">' +
+      '<h2 class="title">Retirement</h2>' +
+      '<div class="intro-card">' +
+      '<p>Visit the <a href="https://mykp.kp.org/en/hr/benefits/retirement.html" target="_blank" rel="noopener noreferrer">Retirement</a> page for detailed information about your retirement plan(s).</p>' +
+      '</div>' +
+      '</div>';
+
+    // Holiday Calendar formatted response
+    var holidayCalendarHTML = '<div class="holiday-calendar-response">' +
+      '<h2 class="title">Holiday Calendar</h2>' +
+      '<div class="intro-card">' +
+      '<p>Here are the <a href="https://qa-mykp.kp.org/en/hr/time/timeoff/holidays.html?tab=2026" target="_blank" rel="noopener noreferrer">holidays</a> for this year.</p>' +
+      '</div>' +
+      '<div class="related-card">' +
+      '<h3>You may also be interested in:</h3>' +
+      '<ul class="related-links">' +
+      '<li><a href="https://qa-mykp.kp.org/en/hr/time/timeoff/my-time-off-benefits.html" target="_blank" rel="noopener noreferrer">Absences (Time Off)</a></li>' +
+      '<li><a href="avaamo:#messages/new/View%20my%20time%20off">View my time off</a></li>' +
+      '</ul>' +
+      '</div>' +
+      '</div>';
+
+    // W2 Preparation formatted response
+    var w2PrepHTML = '<div class="w2-prep-response">' +
+      '<h2 class="title">Prepare for year-end and your W-2!</h2>' +
+      '<div class="checklist-card">' +
+      '<h3>Year-end checklist</h3>' +
+      '<ul class="checklist-list">' +
+      '<li>Update your contact info</li>' +
+      '<li>Renew exempt status (if eligible)</li>' +
+      '<li>Use remaining float holidays</li>' +
+      '<li>Spend any remaining health care flexible spending account funds by December 31</li>' +
+      '<li>Review Social Security and retirement contribution limits</li>' +
+      '</ul>' +
+      '</div>' +
+      '<div class="outro-card">' +
+      '<p>Find important information about your <a href="https://mykp.kp.org/en/hr/money/taxes/important-information-about-your-pay-and-taxes.html" target="_blank" rel="noopener noreferrer">Pay and Taxes</a> on our year end MyKp page.</p>' +
+      '</div>' +
+      '</div>';
+
+    // HR Cases formatted response
+    var hrCasesHTML = '<div class="hr-cases-response">' +
+      '<p class="intro">I found 2 cases.</p>' +
+      '<div class="case-card">' +
+      '<h3>Case #: 6544560</h3>' +
+      '<div class="case-row"><span class="case-label">Date Opened:</span> 07-25-2025</div>' +
+      '<div class="case-row"><span class="case-label">Case Title:</span> 1540-Accommodation Request</div>' +
+      '<div class="case-row"><span class="case-label">Status:</span> New</div>' +
+      '<div class="case-row"><span class="case-label">Latest Comment:</span> N/A</div>' +
+      '<div class="case-row"><span class="case-label">Latest Modified:</span> 07-25-2025</div>' +
+      '<div class="case-actions">' +
+      '<button class="case-btn">View Case</button>' +
+      '<button class="case-btn">View Dashboard</button>' +
+      '<button class="case-btn">Add a document</button>' +
+      '</div>' +
+      '</div>' +
+      '<div class="case-card">' +
+      '<h3>Case #: 6544473</h3>' +
+      '<div class="case-row"><span class="case-label">Date Opened:</span> 06-03-2025</div>' +
+      '<div class="case-row"><span class="case-label">Case Title:</span> Add a Comment from an employee dashboard</div>' +
+      '<div class="case-row"><span class="case-label">Status:</span> New</div>' +
+      '<div class="case-row"><span class="case-label">Latest Comment:</span> Adding a comment as an employee (01 Employee)</div>' +
+      '<div class="case-row"><span class="case-label">Latest Modified:</span> 06-03-2025</div>' +
+      '<div class="case-actions">' +
+      '<button class="case-btn">View Case</button>' +
+      '<button class="case-btn">View Dashboard</button>' +
+      '</div>' +
+      '</div>' +
+      '</div>';
+
+    // IT Help placeholder (no specific content provided)
+    var itHelpHTML = '<div class="w2-prep-response">' +
+      '<h2 class="title">IT Help</h2>' +
+      '<p class="intro">For IT assistance, please contact the KP IT Service Desk or visit the IT Help portal for support with technical issues, password resets, and access requests.</p>' +
+      '</div>';
+
+    // Health Benefits formatted response (event delegation for dynamic content)
+    var healthBenefitsHTML = '<div class="health-benefits-response">' +
+      '<p class="intro">For a more in depth look at your health benefits go to My Health <a href="https://mykp.kp.org/en/hr/benefits/my-health-benefits.html" target="_blank" rel="noopener noreferrer">Health Benefits</a>.</p>' +
+      '<div class="coverage-card">' +
+      '<h3>Medical</h3>' +
+      '<div class="coverage-row"><span class="coverage-label">Current coverage:</span> KEMHP Medical High Plan - PO SCAL</div>' +
+      '<div class="coverage-row"><span class="coverage-label">Coverage level:</span> Employee Only</div>' +
+      '<div class="coverage-row"><span class="coverage-label">Cost per pay period:</span> $70.65</div>' +
+      '</div>' +
+      '<div class="coverage-card">' +
+      '<h3>Dental</h3>' +
+      '<div class="coverage-row"><span class="coverage-label">Current coverage:</span> Delta Dental Comprehensive</div>' +
+      '<div class="coverage-row"><span class="coverage-label">Coverage level:</span> Employee Only</div>' +
+      '<div class="coverage-row"><span class="coverage-label">Group number:</span> #09090-8765</div>' +
+      '<div class="coverage-row"><span class="coverage-label">Cost per pay period:</span> $7.47</div>' +
+      '</div>' +
+      '</div>';
+
+    document.addEventListener('click', function (e) {
+      var showMoreBtn = e.target.closest('.show-more-btn');
+      if (showMoreBtn) {
+        e.preventDefault();
+        var wrap = showMoreBtn.closest('.response-with-sources');
+        var preview = wrap && wrap.querySelector('.response-preview');
+        var textSpan = showMoreBtn.querySelector('.show-more-text');
+        if (preview) {
+          var expanded = preview.classList.toggle('is-expanded');
+          showMoreBtn.setAttribute('data-expanded', expanded);
+          if (textSpan) textSpan.textContent = expanded ? 'Show less' : 'Show more';
+        }
+      }
+
+      if (e.target.closest('.js-health-benefits-link')) {
+        e.preventDefault();
+        executeSearch('What are my health benefits', {
+          forceTopic: 'health-benefits',
+          allowCorrection: false
+        });
+      }
+
+      if (e.target.closest('.js-retirement-link')) {
+        e.preventDefault();
+        executeSearch('Show my retirement benefits', {
+          forceTopic: 'retirement',
+          allowCorrection: false
+        });
+      }
+
+      var chip = e.target.closest('.chip-outline[data-topic]');
+      if (chip) {
+        e.preventDefault();
+        executeSearch(chip.textContent || '', {
+          forceTopic: chip.getAttribute('data-topic'),
+          allowCorrection: false
+        });
+      }
+
+    });
+
+    (function applyInitialQueryFromUrl() {
+      var params = new URLSearchParams(window.location.search);
+      var initialTopic = params.get('topic') || '';
+      var initialQuery = params.get('q') || '';
+      var corrected = params.get('corrected') || '';
+      var searchInput = document.getElementById('searchInput2');
+
+      if (initialQuery && searchInput) {
+        searchInput.value = initialQuery;
+      }
+
+      if (initialTopic || initialQuery || corrected) {
+        executeSearch(initialQuery || corrected, {
+          forceTopic: initialTopic,
+          correctedOverride: corrected,
+          skipHistory: true,
+          skipTopicRouting: !initialTopic,
+          keepOriginalInput: !!initialTopic
+        });
+        return;
+      }
+
+      setSourcesCard(true);
+      var rb = document.getElementById('resultsBody');
+      chatMessages = [{ role: 'assistant', content: toFullContentForChat(rb ? rb.innerHTML : '') }];
+    })();
+  </script>
+
+  <!-- Kai Chatbot FAB -->
+  <button class="kai-fab" aria-label="Chat with Kai">
+    <img src="Kai-icon.png" alt="Kai chatbot" />
+  </button>
+
+  <style>
+    .kai-fab {
+      position: fixed;
+      bottom: 45px;
+      right: 28px;
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      border: none;
+      background: transparent;
+      padding: 0;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .kai-fab:hover {
+      transform: scale(1.08);
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.24);
+    }
+
+    .kai-fab:active {
+      transform: scale(0.96);
+    }
+
+    .kai-fab img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      display: block;
+    }
+  </style>
+</body>
+
+</html>
