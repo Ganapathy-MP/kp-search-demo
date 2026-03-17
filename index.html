@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>MyKP – Search Header</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+      background: #ffffff;
+      color: #09326b;
+    }
+
+    /* Top nav / header – align with Figma TopNav */
+    .kp-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 40px 0;
+      border-bottom: 1px solid #b3b6c5;
+      box-shadow: 0 8px 6px -6px #bababa;
+      height: 72px;
+      background: #ffffff;
+    }
+
+    .kp-header-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .kp-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 22px;
+      font-weight: 600;
+      color: #006296;
+      text-decoration: none;
+    }
+
+    .kp-logo span {
+      font-size: 18px;
+      font-weight: 400;
+      color: #4d6a88;
+    }
+
+    .kp-nav {
+      display: flex;
+      align-items: center;
+      height: 56px;
+    }
+
+    .kp-nav a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 30px 14px;
+      font-size: 16px;
+      line-height: 1.15;
+      font-weight: 350;
+      text-decoration: none;
+      color: #0074ad;
+    }
+
+    .kp-header-right {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      font-size: 16px;
+    }
+
+    .icon-btn {
+      border: none;
+      background: none;
+      cursor: pointer;
+      color: #006296;
+      position: relative;
+      padding: 4px;
+    }
+
+    .icon-svg {
+      width: 20px;
+      height: 20px;
+      display: block;
+    }
+
+    .notif-badge {
+      position: absolute;
+      top: -6px;
+      right: -8px;
+      background: #d92d20;
+      color: #fff;
+      border-radius: 999px;
+      font-size: 10px;
+      padding: 1px 5px;
+      font-weight: 600;
+    }
+
+    .kp-profile {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .kp-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      overflow: hidden;
+      background: #c4d5e8;
+    }
+
+    .kp-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .kp-name {
+      font-size: 15px;
+      font-weight: 600;
+      color: #005184;
+    }
+
+    /* Search bar row (WelcomeBanner from Figma) */
+    .kp-search-area {
+      padding: 19px 30px;
+      border-bottom: 1px solid #e1e5ec;
+      background: #fbfbfc;
+      overflow: visible;
+    }
+
+    .kp-search-bar-wrapper {
+      position: relative;
+      margin-bottom: 16px;
+      width: 980px;
+      max-width: 100%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .kp-search-bar-wrapper .kp-autocomplete {
+      left: 122px;
+      right: 0;
+      top: 50px;
+      z-index: 1000;
+    }
+
+    .kp-search-bar {
+      display: flex;
+      align-items: stretch;
+      border-radius: 54px;
+      overflow: hidden;
+      border: 1px solid #979797;
+      margin: 0 auto;
+      width: 980px;
+      max-width: 100%;
+      height: 50px;
+      background: #ffffff;
+    }
+
+    .kp-search-left {
+      background: #003b71;
+      color: #fff;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 122px;
+      text-align: center;
+      font-weight: 400;
+      font-size: 14px;
+      border-radius: 54px 0 0 54px;
+    }
+
+    .kp-search-left span {
+      line-height: 1.1;
+    }
+
+    .kp-search-input-wrap {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      background: #ffffff;
+      padding: 0 18px;
+      position: relative;
+      min-width: 0;
+    }
+
+    .kp-autocomplete {
+      position: absolute;
+      top: 100%;
+      left: -18px;
+      right: -18px;
+      background: #fff;
+      border: 1px solid #d1d5db;
+      border-top: none;
+      border-radius: 0 0 8px 8px;
+      max-height: 280px;
+      overflow-y: auto;
+      z-index: 100;
+      margin-top: 0;
+      display: none;
+      box-sizing: border-box;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+
+    .kp-autocomplete.is-visible {
+      display: block;
+    }
+
+    .kp-autocomplete-item {
+      display: flex;
+      align-items: center;
+      padding: 12px 18px;
+      font-size: 14px;
+      line-height: 1.4;
+      color: #1f2937;
+      cursor: pointer;
+      transition: background 0.1s ease;
+    }
+
+    .kp-autocomplete-item:hover,
+    .kp-autocomplete-item.is-active {
+      background: #f3f4f6;
+    }
+
+    .kp-autocomplete-item-icon {
+      flex-shrink: 0;
+      width: 18px;
+      height: 18px;
+      margin-right: 12px;
+      color: #9ca3af;
+    }
+
+    .kp-autocomplete-item:hover .kp-autocomplete-item-icon,
+    .kp-autocomplete-item.is-active .kp-autocomplete-item-icon {
+      color: #006296;
+    }
+
+    .kp-autocomplete-item-main {
+      min-width: 0;
+      flex: 1;
+    }
+
+    .kp-autocomplete-item-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: #09326b;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .kp-autocomplete-item-title mark {
+      background: #e0f2ff;
+      color: #0b4f7a;
+      border-radius: 2px;
+      padding: 0 2px;
+    }
+
+    .kp-autocomplete-item-meta {
+      margin-top: 2px;
+      font-size: 12px;
+      color: #667085;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .kp-autocomplete-badge {
+      flex-shrink: 0;
+      font-size: 11px;
+      line-height: 1;
+      color: #005184;
+      background: #e0f2ff;
+      border-radius: 999px;
+      padding: 5px 8px;
+      margin-left: 10px;
+      font-weight: 600;
+    }
+
+    .kp-search-insights {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 8px;
+      padding: 0 124px 0 124px;
+    }
+
+    .kp-spell-hint,
+    .kp-predict-hint {
+      min-height: 18px;
+      font-size: 12px;
+      color: #52617a;
+    }
+
+    .kp-inline-fix {
+      border: none;
+      background: none;
+      color: #005184;
+      text-decoration: underline;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 0;
+    }
+
+    .kp-search-input {
+      flex: 1;
+      border: none;
+      outline: none;
+      font-size: 14px;
+      color: #222;
+    }
+
+    .kp-search-submit {
+      width: 54px;
+      border: none;
+      background: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border-radius: 0 54px 54px 0;
+    }
+
+    .kp-search-submit img {
+      width: 40px;
+      height: 30px;
+      display: block;
+    }
+
+    /* Chips row */
+    .kp-chip-row {
+      max-width: 940px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      padding-top: 10px;
+      padding-bottom: 10px;
+    }
+
+    .kp-chip {
+      border-radius: 16px;
+      border: 1px solid #003b71;
+      padding: 6px 16px;
+      height: 32px;
+      font-size: 15px;
+      letter-spacing: -0.23px;
+      color: #003b71;
+      background: #ffffff;
+      cursor: pointer;
+      font-weight: 590;
+    }
+
+    .kp-chip:focus-visible,
+    .kp-search-submit:focus-visible {
+      outline: 2px solid #005bb5;
+      outline-offset: 2px;
+    }
+
+    .kp-search-input:focus,
+    .kp-search-input:focus-visible {
+      outline: none;
+    }
+
+    /* Bottom static image area */
+    .kp-bottom-image {
+      width: 100%;
+      overflow: hidden;
+    }
+
+    .kp-bottom-image img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    @media (max-width: 900px) {
+      .kp-search-insights {
+        padding: 0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- HEADER -->
+  <header class="kp-header">
+    <div class="kp-header-left">
+      <a href="index.html" class="kp-logo" aria-label="Go to home">
+        <span>KAISER PERMANENTE</span>
+        <span>| MyKP</span>
+      </a>
+      <nav class="kp-nav">
+        <a href="#">For Me</a>
+        <a href="#">For My Job</a>
+        <a href="#">For Managers</a>
+        <a href="#">About KP</a>
+      </nav>
+    </div>
+
+    <div class="kp-header-right">
+      <button class="icon-btn" aria-label="Search">
+        <svg class="icon-svg" viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="11" cy="11" r="5.5" fill="none" stroke="#006296" stroke-width="1.8" />
+          <line x1="14.5" y1="14.5" x2="19" y2="19" stroke="#006296" stroke-width="1.8" stroke-linecap="round" />
+        </svg>
+      </button>
+      <button class="icon-btn" aria-label="Favorites">
+        <svg class="icon-svg" viewBox="0 0 24 24" aria-hidden="true">
+          <rect x="4" y="5" width="16" height="14" rx="2" ry="2" fill="none" stroke="#006296" stroke-width="1.8" />
+          <polyline points="4,9 12,9 20,9" fill="none" stroke="#006296" stroke-width="1.8" />
+        </svg>
+      </button>
+      <button class="icon-btn" aria-label="Notifications">
+        <svg class="icon-svg" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 4c-2.2 0-4 1.8-4 4v3.5L7 14v1h10v-1l-1-2.5V8c0-2.2-1.8-4-4-4z" fill="none" stroke="#006296"
+            stroke-width="1.8" stroke-linejoin="round" />
+          <path d="M10 17c.3.9 1 1.5 2 1.5s1.7-.6 2-1.5" fill="none" stroke="#006296" stroke-width="1.8"
+            stroke-linecap="round" />
+        </svg>
+        <span class="notif-badge">4</span>
+      </button>
+      <div class="kp-profile">
+        <div class="kp-avatar">
+          <!-- Optional: replace with real photo -->
+        </div>
+        <span class="kp-name">KimberlynnAnne</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- SEARCH BAR + CHIPS -->
+  <section class="kp-search-area">
+    <div class="kp-search-bar-wrapper">
+      <form id="kpSearchForm" class="kp-search-bar">
+        <div class="kp-search-left">
+          <span>How can<br />I help you?</span>
+        </div>
+        <div class="kp-search-input-wrap">
+          <input id="kpSearchInput" class="kp-search-input" type="text" aria-label="Search" autocomplete="off"
+            spellcheck="true" autocorrect="on" autocapitalize="off" inputmode="search" />
+        </div>
+        <button type="submit" class="kp-search-submit" aria-label="Search">
+          <img src="search-arrow.png" alt="" aria-hidden="true" />
+        </button>
+      </form>
+      <div id="kpAutocomplete" class="kp-autocomplete" role="listbox" aria-label="Search suggestions"></div>
+      <div class="kp-search-insights">
+        <div id="kpSpellHint" class="kp-spell-hint" aria-live="polite"></div>
+        <div id="kpPredictHint" class="kp-predict-hint" aria-live="polite"></div>
+      </div>
+    </div>
+
+    <div class="kp-chip-row">
+      <button class="kp-chip js-health-benefits">Health Benefits</button>
+      <button class="kp-chip js-hr-cases">HR Cases</button>
+      <button class="kp-chip js-redirect">IT Help</button>
+      <button class="kp-chip js-w2-prep">W2 Preparation</button>
+      <button class="kp-chip js-holiday-calendar">Holiday Calendar</button>
+      <button class="kp-chip js-time-off">Time off</button>
+      <button class="kp-chip js-retirement">Retirement</button>
+    </div>
+  </section>
+
+  <!-- BOTTOM STATIC IMAGE (no HTML, just image) -->
+  <section class="kp-bottom-image">
+    <img src="Attached_image_1.png" alt="MyKP search results static layout" />
+  </section>
+
+  <!-- Kai Chatbot FAB -->
+  <button class="kai-fab" aria-label="Chat with Kai">
+    <img src="Kai-icon.png" alt="Kai chatbot" />
+  </button>
+
+  <style>
+    .kai-fab {
+      position: fixed;
+      bottom: 45px;
+      right: 28px;
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      border: none;
+      background: transparent;
+      padding: 0;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .kai-fab:hover {
+      transform: scale(1.08);
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.24);
+    }
+
+    .kai-fab:active {
+      transform: scale(0.96);
+    }
+
+    .kai-fab img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      display: block;
+    }
+  </style>
+
+  <script>
+    const targetUrl = 'results.html';
+    var RECENT_SEARCH_KEY = 'kp-demo-recent-searches';
+
+    var SEARCH_INTENTS = [
+      {
+        topic: 'health-benefits',
+        title: 'Health Benefits',
+        query: 'What are my health benefits',
+        aliases: ['what is my benefits', 'health benifits', 'medical benefits', 'dental coverage'],
+        preview: 'Medical, dental, and plan cost details',
+        expansions: ['benefits', 'medical', 'dental'],
+        popular: true
+      },
+      {
+        topic: 'hr-cases',
+        title: 'HR Cases',
+        query: 'What are my HR cases',
+        aliases: ['what are my hr case', 'hr casses', 'my open hr cases', 'employee dashboard case'],
+        preview: 'Open cases, status, and latest comments',
+        expansions: ['hr case', 'employee case status', 'dashboard'],
+        popular: true
+      },
+      {
+        topic: 'time-off',
+        title: 'Time Off',
+        query: 'What are my time off balances',
+        aliases: ['what are my time off', 'pto balance', 'vacation hours', 'sick leave balance', 'time of'],
+        preview: 'PTO, holiday, and sick balance at a glance',
+        expansions: ['pto', 'vacation', 'absence balance'],
+        popular: true
+      },
+      {
+        topic: 'tort',
+        title: 'Time Off Request Tracking (TORT)',
+        query: 'How do I use TORT',
+        aliases: ['tort', 'time off request tracking', 'no approver on record', 'approve time off request'],
+        preview: 'Request and approver help for TORT',
+        expansions: ['tort', 'time request tracking', 'approver'],
+        popular: false
+      },
+      {
+        topic: 'w2-prep',
+        title: 'W2 Preparation',
+        query: 'How do I prepare for my W2',
+        aliases: ['w2 preparation', 'w2 preperation', 'pay and taxes', 'year end checklist'],
+        preview: 'Year-end checklist and tax links',
+        expansions: ['w2', 'taxes', 'year end'],
+        popular: false
+      },
+      {
+        topic: 'holiday-calendar',
+        title: 'Holiday Calendar',
+        query: 'What is the holiday calendar',
+        aliases: ['holiday calender', 'holiday schedule', 'company holidays', 'floating holiday'],
+        preview: 'Current year holidays and related links',
+        expansions: ['holiday', 'calendar', 'time off'],
+        popular: false
+      },
+      {
+        topic: 'retirement',
+        title: 'Retirement',
+        query: 'Show my retirement benefits',
+        aliases: ['retirment', 'retirement plan', '401k', 'pension'],
+        preview: 'Retirement plan details and resources',
+        expansions: ['retirement', '401k', 'pension'],
+        popular: false
+      },
+      {
+        topic: 'it-help',
+        title: 'IT Help',
+        query: 'I need IT help',
+        aliases: ['password reset', 'it support', 'vpn issue', 'access request'],
+        preview: 'Service desk and support options',
+        expansions: ['it help', 'service desk', 'support'],
+        popular: false
+      },
+      {
+        topic: 'medical-leave-extend',
+        title: 'Extend Medical Leave',
+        query: 'I\'m currently on medical leave and might need more time. What do I need to do to extend it?',
+        aliases: ['extend medical leave', 'medical leave extension', 'more time on leave', 'extend my leave'],
+        preview: 'Steps to extend a medical leave of absence',
+        expansions: ['medical leave', 'extend leave', 'leave of absence'],
+        popular: false
+      },
+      {
+        topic: 'compensation-philosophy',
+        title: 'Compensation Philosophy',
+        query: 'How does the compensation philosophy affect how I\'m paid?',
+        aliases: ['compensation philosophy', 'how am I paid', 'pay philosophy', 'salary philosophy', 'merit pay', 'total compensation'],
+        preview: 'Fair pay, merit, transparency, and total rewards',
+        expansions: ['compensation', 'pay', 'salary', 'merit'],
+        popular: false
+      },
+      {
+        topic: 'laptop-sick-leave',
+        title: 'Laptop Issue and Sick Leave',
+        query: 'My laptop isn\'t working and I also want to submit a sick leave request. What should I do?',
+        aliases: ['laptop not working', 'computer hardware issue', 'sick leave request', 'submit time off', 'laptop broken', 'sick day request'],
+        preview: 'Report laptop issues and submit sick leave',
+        expansions: ['laptop', 'sick leave', 'time off', 'computer issue'],
+        popular: false
+      },
+      {
+        topic: 'robert-hitomi',
+        title: 'Robert K Hitomi',
+        query: 'Robert K Hitomi',
+        aliases: ['Robert Hitomi', 'Hitomi', 'R Hitomi', 'Rob Hitomi', 'Rob hitomi', 'rob hitomi', 'robert hitomi', 'robert k hitomi'],
+        preview: 'Director of Product Management, EmSvc HRIS Digital Systems',
+        expansions: ['hitomi', 'robert hitomi', 'robert k hitomi'],
+        popular: false
+      }
+    ];
+
+    var TYPO_NORMALIZATION_MAP = {
+      benifits: 'benefits',
+      benfits: 'benefits',
+      benefiits: 'benefits',
+      casses: 'cases',
+      retirment: 'retirement',
+      preperation: 'preparation',
+      calender: 'calendar'
+    };
+
+    function normalizeText(value) {
+      var normalized = (value || '')
+        .toLowerCase()
+        .replace(/[^a-z0-9\s]/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+      if (!normalized) return '';
+      normalized = normalized.replace(/\btime of\b/g, 'time off');
+      return normalized.split(' ').map(function (token) {
+        return TYPO_NORMALIZATION_MAP[token] || token;
+      }).join(' ').trim();
+    }
+
+    function escapeHtml(value) {
+      return (value || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function levenshteinDistance(a, b) {
+      var source = a || '';
+      var target = b || '';
+      var matrix = [];
+      var i;
+      var j;
+
+      if (!source.length) return target.length;
+      if (!target.length) return source.length;
+
+      for (i = 0; i <= target.length; i += 1) {
+        matrix[i] = [i];
+      }
+      for (j = 0; j <= source.length; j += 1) {
+        matrix[0][j] = j;
+      }
+
+      for (i = 1; i <= target.length; i += 1) {
+        for (j = 1; j <= source.length; j += 1) {
+          if (target.charAt(i - 1) === source.charAt(j - 1)) {
+            matrix[i][j] = matrix[i - 1][j - 1];
+          } else {
+            matrix[i][j] = Math.min(
+              matrix[i - 1][j - 1] + 1,
+              matrix[i][j - 1] + 1,
+              matrix[i - 1][j] + 1
+            );
+          }
+        }
+      }
+
+      return matrix[target.length][source.length];
+    }
+
+    function scoreCandidate(query, candidate) {
+      if (!query || !candidate) return 0;
+      if (query === candidate) return 1;
+      if (candidate.indexOf(query) !== -1) return 0.93;
+      if (query.indexOf(candidate) !== -1) return 0.87;
+
+      var queryTokens = query.split(' ');
+      var candidateTokens = candidate.split(' ');
+      var overlapCount = 0;
+      queryTokens.forEach(function (token) {
+        if (candidateTokens.indexOf(token) !== -1) overlapCount += 1;
+      });
+
+      var overlapScore = overlapCount / Math.max(queryTokens.length, candidateTokens.length);
+      var editDistance = levenshteinDistance(query, candidate);
+      var editScore = 1 - (editDistance / Math.max(query.length, candidate.length));
+      var blended = (overlapScore * 0.78) + (editScore * 0.42);
+      return Math.max(0, Math.min(1, Math.max(blended, editScore * 0.65)));
+    }
+
+    function rankIntents(rawQuery) {
+      var query = normalizeText(rawQuery);
+      if (!query) return [];
+
+      var ranked = SEARCH_INTENTS.map(function (intent) {
+        var candidates = [intent.query].concat(intent.aliases || []);
+        var bestScore = 0;
+
+        candidates.forEach(function (candidate) {
+          var score = scoreCandidate(query, normalizeText(candidate));
+          if (score > bestScore) bestScore = score;
+        });
+
+        return { intent: intent, score: bestScore };
+      });
+
+      return ranked.sort(function (a, b) { return b.score - a.score; });
+    }
+
+    function analyzeQuery(rawQuery) {
+      var ranked = rankIntents(rawQuery);
+      var query = normalizeText(rawQuery);
+      if (!ranked.length || ranked[0].score < 0.24) {
+        return {
+          topic: '',
+          confidence: 0,
+          canonicalQuery: '',
+          correctedQuery: '',
+          expansions: []
+        };
+      }
+
+      var top = ranked[0];
+      var corrected = '';
+      if (query && normalizeText(top.intent.query) !== query && top.score >= 0.45) {
+        corrected = top.intent.query;
+      }
+
+      return {
+        topic: top.intent.topic,
+        confidence: top.score,
+        canonicalQuery: top.intent.query,
+        correctedQuery: corrected,
+        expansions: top.intent.expansions || []
+      };
+    }
+
+    function getRecentSearches() {
+      try {
+        var raw = localStorage.getItem(RECENT_SEARCH_KEY);
+        var parsed = raw ? JSON.parse(raw) : [];
+        return Array.isArray(parsed) ? parsed : [];
+      } catch (error) {
+        return [];
+      }
+    }
+
+    function saveRecentSearch(query) {
+      var value = (query || '').trim();
+      if (!value) return;
+      var recents = getRecentSearches().filter(function (item) {
+        return normalizeText(item) !== normalizeText(value);
+      });
+      recents.unshift(value);
+      try {
+        localStorage.setItem(RECENT_SEARCH_KEY, JSON.stringify(recents.slice(0, 5)));
+      } catch (error) {
+        return;
+      }
+    }
+
+    function buildSuggestions(rawQuery) {
+      var query = (rawQuery || '').trim();
+      var usedTopics = {};
+
+      if (!query) {
+        var recent = getRecentSearches().map(function (item) {
+          var analysis = analyzeQuery(item);
+          return {
+            query: item,
+            topic: analysis.topic,
+            meta: analysis.topic ? 'Recent search' : 'Recent free-text search',
+            badge: 'Recent'
+          };
+        });
+
+        recent.forEach(function (item) {
+          if (item.topic) usedTopics[item.topic] = true;
+        });
+
+        var popular = SEARCH_INTENTS.filter(function (intent) {
+          return intent.popular && !usedTopics[intent.topic];
+        }).slice(0, 4).map(function (intent) {
+          return {
+            query: intent.query,
+            topic: intent.topic,
+            meta: intent.preview,
+            badge: 'Popular'
+          };
+        });
+
+        return recent.concat(popular).slice(0, 6);
+      }
+
+      var ranked = rankIntents(query).filter(function (item) {
+        return item.score >= 0.18;
+      }).slice(0, 6);
+
+      if (!ranked.length) {
+        return SEARCH_INTENTS.filter(function (intent) {
+          return intent.popular;
+        }).slice(0, 4).map(function (intent) {
+          return {
+            query: intent.query,
+            topic: intent.topic,
+            meta: intent.preview,
+            badge: 'Popular'
+          };
+        });
+      }
+
+      return ranked.map(function (item) {
+        var badge = '';
+        var normalizedInput = normalizeText(query);
+        var normalizedCanonical = normalizeText(item.intent.query);
+        if (normalizedInput && normalizedCanonical !== normalizedInput && item.score >= 0.45) {
+          badge = 'Suggested';
+        }
+        return {
+          query: item.intent.query,
+          topic: item.intent.topic,
+          meta: item.intent.preview,
+          badge: badge
+        };
+      });
+    }
+
+    function highlightSuggestion(text, rawQuery) {
+      var query = (rawQuery || '').trim();
+      if (!query) return escapeHtml(text);
+      var start = text.toLowerCase().indexOf(query.toLowerCase());
+      if (start === -1) return escapeHtml(text);
+      var end = start + query.length;
+      return escapeHtml(text.slice(0, start)) +
+        '<mark>' + escapeHtml(text.slice(start, end)) + '</mark>' +
+        escapeHtml(text.slice(end));
+    }
+
+    function redirectWithAnalysis(rawQuery, options) {
+      var opts = options || {};
+      var query = (rawQuery || '').trim();
+      if (!query && !opts.forceTopic) {
+        window.location.href = targetUrl;
+        return;
+      }
+
+      var analysis = analyzeQuery(query);
+      var topic = opts.forceTopic || (opts.skipTopicRouting ? '' : analysis.topic);
+      if (!opts.skipTopicRouting && !topic && analysis.correctedQuery) {
+        topic = analyzeQuery(analysis.correctedQuery).topic;
+      }
+      var params = new URLSearchParams();
+
+      if (query) params.set('q', query);
+      if (topic) params.set('topic', topic);
+      if (!opts.skipTopicRouting && !topic && analysis.correctedQuery && normalizeText(query) !== normalizeText(analysis.correctedQuery)) {
+        params.set('corrected', analysis.correctedQuery);
+      }
+      if (analysis.confidence) {
+        params.set('score', String(Math.round(analysis.confidence * 100)));
+      }
+      if (opts.fromAutocomplete) {
+        params.set('fromAutocomplete', '1');
+      }
+
+      var queryString = params.toString();
+      window.location.href = queryString ? (targetUrl + '?' + queryString) : targetUrl;
+    }
+
+    (function initAutocomplete() {
+      var input = document.getElementById('kpSearchInput');
+      var dropdown = document.getElementById('kpAutocomplete');
+      var spellHint = document.getElementById('kpSpellHint');
+      var predictHint = document.getElementById('kpPredictHint');
+      if (!input || !dropdown) return;
+      var activeIndex = -1;
+      var currentSuggestions = [];
+
+      function renderSuggestions(items, rawQuery) {
+        var iconSvg = '<svg class="kp-autocomplete-item-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line x1="14.5" y1="14.5" x2="19" y2="19" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>';
+        dropdown.innerHTML = items.map(function (item, i) {
+          var badge = item.badge ? '<span class="kp-autocomplete-badge">' + escapeHtml(item.badge) + '</span>' : '';
+          return '<div class="kp-autocomplete-item" role="option" tabindex="-1" data-index="' + i + '" data-query="' + escapeHtml(item.query || '') + '" data-topic="' + escapeHtml(item.topic || '') + '">' +
+            iconSvg +
+            '<div class="kp-autocomplete-item-main">' +
+            '<div class="kp-autocomplete-item-title">' + highlightSuggestion(item.query, rawQuery) + '</div>' +
+            '<div class="kp-autocomplete-item-meta">' + escapeHtml(item.meta || '') + '</div>' +
+            '</div>' +
+            badge +
+            '</div>';
+        }).join('');
+        activeIndex = -1;
+      }
+
+      function showDropdown(items, rawQuery) {
+        currentSuggestions = items;
+        if (!items.length) {
+          dropdown.classList.remove('is-visible');
+          return;
+        }
+        renderSuggestions(items, rawQuery);
+        dropdown.classList.add('is-visible');
+      }
+
+      function hideDropdown() {
+        dropdown.classList.remove('is-visible');
+        activeIndex = -1;
+      }
+
+      function selectSuggestion(index) {
+        var selected = currentSuggestions[index];
+        if (!selected) return;
+        input.value = selected.query;
+        saveRecentSearch(selected.query);
+        hideDropdown();
+        redirectWithAnalysis(selected.query, {
+          forceTopic: selected.topic,
+          fromAutocomplete: true
+        });
+      }
+
+      function updateHints(rawQuery) {
+        var query = (rawQuery || '').trim();
+        if (!query) {
+          if (spellHint) { spellHint.textContent = ''; spellHint.removeAttribute('data-corrected'); }
+          if (predictHint) predictHint.textContent = '';
+          return;
+        }
+
+        var analysis = analyzeQuery(query);
+        if (spellHint) {
+          if (analysis.correctedQuery && normalizeText(query) !== normalizeText(analysis.correctedQuery)) {
+            spellHint.innerHTML = 'Did you mean <button type="button" class="kp-inline-fix" data-action="use-correction">' +
+              escapeHtml(analysis.correctedQuery) + '</button>?';
+            spellHint.setAttribute('data-corrected', analysis.correctedQuery);
+          } else {
+            spellHint.textContent = '';
+            spellHint.removeAttribute('data-corrected');
+          }
+        }
+        if (predictHint) predictHint.textContent = '';
+      }
+
+      input.addEventListener('focus', function () {
+        var items = buildSuggestions(input.value);
+        showDropdown(items, input.value);
+        updateHints(input.value);
+      });
+
+      input.addEventListener('input', function () {
+        var items = buildSuggestions(input.value);
+        showDropdown(items, input.value);
+        updateHints(input.value);
+      });
+
+      input.addEventListener('blur', function (e) {
+        var related = e.relatedTarget;
+        if (related && dropdown.contains(related)) return;
+        setTimeout(function () {
+          if (document.activeElement && dropdown.contains(document.activeElement)) return;
+          hideDropdown();
+        }, 150);
+      });
+
+      input.addEventListener('keydown', function (e) {
+        var items = dropdown.querySelectorAll('.kp-autocomplete-item');
+
+        if (e.key === 'Escape') {
+          hideDropdown();
+          return;
+        }
+        if (!items.length) return;
+        if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          activeIndex = Math.min(activeIndex + 1, items.length - 1);
+          items.forEach(function (el, i) { el.classList.toggle('is-active', i === activeIndex); });
+          items[activeIndex].scrollIntoView({ block: 'nearest' });
+        } else if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          activeIndex = Math.max(activeIndex - 1, -1);
+          items.forEach(function (el, i) { el.classList.toggle('is-active', i === activeIndex); });
+        } else if (e.key === 'Enter') {
+          e.preventDefault();
+          if (activeIndex >= 0 && items[activeIndex]) {
+            selectSuggestion(activeIndex);
+          } else {
+            hideDropdown();
+            var q = (input.value || '').trim();
+            if (q) {
+              saveRecentSearch(q);
+              redirectWithAnalysis(q);
+            } else {
+              window.location.href = targetUrl;
+            }
+          }
+        }
+      });
+
+      function handleSuggestionSelect(item) {
+        if (!item) return;
+        var topic = item.getAttribute('data-topic');
+        var query = item.getAttribute('data-query');
+        if (topic && query) {
+          input.value = query;
+          saveRecentSearch(query);
+          hideDropdown();
+          redirectWithAnalysis(query, { forceTopic: topic, fromAutocomplete: true });
+        } else {
+          selectSuggestion(Number(item.getAttribute('data-index')));
+        }
+      }
+
+      dropdown.addEventListener('mousedown', function (e) {
+        var item = e.target.closest('.kp-autocomplete-item');
+        if (!item) return;
+        e.stopPropagation();
+        item.focus();
+        handleSuggestionSelect(item);
+      });
+
+      if (spellHint) {
+        spellHint.addEventListener('click', function (e) {
+          if (!e.target.closest('[data-action="use-correction"]')) return;
+          var corrected = spellHint.getAttribute('data-corrected');
+          if (!corrected) return;
+          input.value = corrected;
+          input.focus();
+          var suggestions = buildSuggestions(input.value);
+          showDropdown(suggestions, input.value);
+          updateHints(input.value);
+        });
+      }
+
+      document.addEventListener('click', function (e) {
+        if (!e.target.closest('.kp-search-bar-wrapper')) {
+          hideDropdown();
+        }
+      });
+    })();
+
+    var kpSearchForm = document.getElementById('kpSearchForm');
+    if (kpSearchForm) {
+      kpSearchForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var searchInput = document.getElementById('kpSearchInput');
+        var query = (searchInput ? searchInput.value : '').trim();
+        if (!query) {
+          window.location.href = targetUrl;
+          return;
+        }
+        saveRecentSearch(query);
+        redirectWithAnalysis(query);
+      });
+    }
+
+    function bindChip(selector, href) {
+      var el = document.querySelector(selector);
+      if (el) el.addEventListener('click', function () { window.location.href = href; });
+    }
+    bindChip('.js-health-benefits', targetUrl + '?topic=health-benefits&fromChip=1');
+    bindChip('.js-hr-cases', targetUrl + '?topic=hr-cases&fromChip=1');
+    bindChip('.js-w2-prep', targetUrl + '?topic=w2-prep&fromChip=1');
+    bindChip('.js-holiday-calendar', targetUrl + '?topic=holiday-calendar&fromChip=1');
+    bindChip('.js-time-off', targetUrl + '?topic=time-off&fromChip=1');
+    bindChip('.js-retirement', targetUrl + '?topic=retirement&fromChip=1');
+    document.querySelectorAll('.js-redirect').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        window.location.href = targetUrl + '?fromChip=1';
+      });
+    });
+  </script>
+</body>
+
+</html>
