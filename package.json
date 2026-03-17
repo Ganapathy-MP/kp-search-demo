@@ -1,0 +1,9 @@
+{
+  "name": "kp-search",
+  "version": "1.0.0",
+  "description": "MyKP Search Portal",
+  "scripts": {
+    "test": "node --test tests/search.test.js"
+  },
+  "private": true
+}
